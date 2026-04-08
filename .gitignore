@@ -1,0 +1,18 @@
+# Credentials and secrets - NEVER commit
+*.secret.json
+client_secret*.json
+credentials.json
+*.key
+*.pem
+keys/
+
+# Environment files
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/

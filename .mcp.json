@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "googleworkspace": {
+      "command": "gws",
+      "args": ["mcp", "-s", "gmail"]
+    }
+  }
+}
