@@ -34,7 +34,7 @@ APP_LOG_FILE = TRACKING_DIR / "application-log.md"
 
 CALLIE_EMAIL = "CallieWells17@gmail.com"
 LOCATION = "Rancho Santa Margarita, CA"
-RADIUS = 25
+RADIUS = 50
 
 # Search queries matching Callie's target roles
 SEARCH_QUERIES = [
@@ -253,7 +253,7 @@ Daily Job Scan completed at {scan_time}.
 
 {stats}
 
-NEW JOB POSTINGS (last 24 hours, within {RADIUS}mi):
+NEW JOB POSTINGS (last 24 hours, within {RADIUS} mi):
 
 {links_text}
 
