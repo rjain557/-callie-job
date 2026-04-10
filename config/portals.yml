@@ -1,64 +1,137 @@
 # Portal Scanner Configuration for Callie Wells
 # Scanned daily by career-ops pipeline
 
-# Indeed search queries (primary source)
-search_queries:
-  - query: "interior design consultant"
-    enabled: true
-    location: "Rancho Santa Margarita, CA"
-    radius: 50
+# ═══════════════════════════════════════════════════════════
+#  JOB BOARDS — General (high volume)
+# ═══════════════════════════════════════════════════════════
 
-  - query: "interior designer assistant"
-    enabled: true
-    location: "Rancho Santa Margarita, CA"
-    radius: 50
+job_boards:
 
-  - query: "design coordinator residential"
+  # ── Indeed ──
+  indeed:
     enabled: true
-    location: "Rancho Santa Margarita, CA"
-    radius: 50
+    base_url: "https://www.indeed.com/jobs"
+    params:
+      l: "Rancho Santa Margarita, CA"
+      radius: 50
+      sort: "date"
+      fromage: 1
+    queries:
+      - "interior design consultant"
+      - "interior designer assistant"
+      - "design coordinator residential"
+      - "home staging"
+      - "in-home design consultant"
+      - "showroom manager design"
+      - "project coordinator design firm"
+      - "administrative coordinator design"
+      - "office manager design"
+      - "client services coordinator design"
+      - "design consultant remodeling"
 
-  - query: "home staging"
+  # ── LinkedIn Jobs ──
+  linkedin:
     enabled: true
-    location: "Rancho Santa Margarita, CA"
-    radius: 50
+    base_url: "https://www.linkedin.com/jobs/search"
+    params:
+      location: "Orange County, California, United States"
+      distance: 50
+      sortBy: "DD"  # date posted
+      f_TPR: "r86400"  # last 24 hours
+    queries:
+      - "interior design consultant"
+      - "interior designer assistant"
+      - "home staging"
+      - "design coordinator"
+      - "showroom manager"
+      - "project coordinator design"
+      - "client services coordinator"
+      - "in-home design consultant"
 
-  - query: "in-home design consultant"
+  # ── ZipRecruiter ──
+  ziprecruiter:
     enabled: true
-    location: "Rancho Santa Margarita, CA"
-    radius: 50
+    base_url: "https://www.ziprecruiter.com/jobs-search"
+    params:
+      search.location: "Rancho Santa Margarita, CA"
+      refine_by_location_type: "within_50_miles"
+      days: 1
+    queries:
+      - "interior design consultant"
+      - "interior designer assistant"
+      - "home staging"
+      - "design coordinator"
+      - "showroom manager"
+      - "in-home design consultant"
+      - "design consultant remodeling"
+      - "project coordinator design"
 
-  - query: "showroom manager design"
+  # ── Glassdoor ──
+  glassdoor:
     enabled: true
-    location: "Rancho Santa Margarita, CA"
-    radius: 50
+    base_url: "https://www.glassdoor.com/Job/jobs.htm"
+    params:
+      locT: "C"
+      locKeyword: "Orange County, CA"
+      radius: 50
+      fromAge: 1
+    queries:
+      - "interior design consultant"
+      - "interior designer"
+      - "home staging"
+      - "design coordinator"
+      - "showroom manager"
+      - "project coordinator design"
 
-  - query: "project coordinator design firm"
+# ═══════════════════════════════════════════════════════════
+#  JOB BOARDS — Design/Creative Specific
+# ═══════════════════════════════════════════════════════════
+
+  # ── Houzz ──
+  houzz:
     enabled: true
-    location: "Rancho Santa Margarita, CA"
-    radius: 50
+    base_url: "https://www.houzz.com/jobs"
+    notes: "Interior designers and home pros post jobs here"
+    queries:
+      - "interior designer Orange County"
+      - "home stager Orange County"
+      - "design consultant Orange County"
+      - "showroom Orange County"
 
-  - query: "administrative coordinator design"
+  # ── ASID Career Center ──
+  asid:
     enabled: true
-    location: "Rancho Santa Margarita, CA"
-    radius: 50
+    base_url: "https://www.asid.org/career-center"
+    notes: "American Society of Interior Designers career board"
+    queries:
+      - "interior designer California"
+      - "design assistant California"
+      - "project coordinator California"
 
-  - query: "office manager design"
+  # ── Design Jobs Board ──
+  designjobsboard:
     enabled: true
-    location: "Rancho Santa Margarita, CA"
-    radius: 50
+    base_url: "https://www.designjobsboard.com"
+    notes: "Design-industry-specific job board"
+    queries:
+      - "interior designer"
+      - "design coordinator"
+      - "home staging"
 
-  - query: "client services coordinator design"
+  # ── Coroflot ──
+  coroflot:
     enabled: true
-    location: "Rancho Santa Margarita, CA"
-    radius: 50
+    base_url: "https://www.coroflot.com/jobs"
+    notes: "Design industry job board — broader design roles"
+    queries:
+      - "interior design"
+      - "design consultant"
+      - "showroom"
 
-  - query: "design consultant remodeling"
-    enabled: true
-    location: "Rancho Santa Margarita, CA"
-    radius: 50
+# ═══════════════════════════════════════════════════════════
+#  TRACKED COMPANIES — Direct careers pages
+# ═══════════════════════════════════════════════════════════
 
-# Companies to track directly (careers pages)
 tracked_companies:
   - name: "Ethan Allen"
     careers_url: "https://www.ethanallen.com/en_US/careers.html"
@@ -110,7 +183,10 @@ tracked_companies:
     platform: "custom"
     enabled: true
 
-# Title filters
+# ═══════════════════════════════════════════════════════════
+#  TITLE FILTERS
+# ═══════════════════════════════════════════════════════════
+
 title_filter:
   positive:
     - "design"
@@ -125,6 +201,13 @@ title_filter:
     - "client services"
     - "project coordinator"
     - "admin"
+    - "home stag"
+    - "decor"
+    - "furnish"
+    - "tile"
+    - "kitchen"
+    - "bath"
+    - "remodel"
   negative:
     - "autocad"
     - "revit"
@@ -137,3 +220,7 @@ title_filter:
     - "warehouse"
     - "driver"
     - "janitor"
+    - "plumber"
+    - "electrician"
+    - "hvac"
+    - "landscap"
