@@ -1,0 +1,139 @@
+# Portal Scanner Configuration for Callie Wells
+# Scanned daily by career-ops pipeline
+
+# Indeed search queries (primary source)
+search_queries:
+  - query: "interior design consultant"
+    enabled: true
+    location: "Rancho Santa Margarita, CA"
+    radius: 50
+
+  - query: "interior designer assistant"
+    enabled: true
+    location: "Rancho Santa Margarita, CA"
+    radius: 50
+
+  - query: "design coordinator residential"
+    enabled: true
+    location: "Rancho Santa Margarita, CA"
+    radius: 50
+
+  - query: "home staging"
+    enabled: true
+    location: "Rancho Santa Margarita, CA"
+    radius: 50
+
+  - query: "in-home design consultant"
+    enabled: true
+    location: "Rancho Santa Margarita, CA"
+    radius: 50
+
+  - query: "showroom manager design"
+    enabled: true
+    location: "Rancho Santa Margarita, CA"
+    radius: 50
+
+  - query: "project coordinator design firm"
+    enabled: true
+    location: "Rancho Santa Margarita, CA"
+    radius: 50
+
+  - query: "administrative coordinator design"
+    enabled: true
+    location: "Rancho Santa Margarita, CA"
+    radius: 50
+
+  - query: "office manager design"
+    enabled: true
+    location: "Rancho Santa Margarita, CA"
+    radius: 50
+
+  - query: "client services coordinator design"
+    enabled: true
+    location: "Rancho Santa Margarita, CA"
+    radius: 50
+
+  - query: "design consultant remodeling"
+    enabled: true
+    location: "Rancho Santa Margarita, CA"
+    radius: 50
+
+# Companies to track directly (careers pages)
+tracked_companies:
+  - name: "Ethan Allen"
+    careers_url: "https://www.ethanallen.com/en_US/careers.html"
+    platform: "custom"
+    enabled: false  # former employer
+
+  - name: "Restoration Hardware (RH)"
+    careers_url: "https://rh.com/careers"
+    platform: "custom"
+    enabled: true
+
+  - name: "Pottery Barn"
+    careers_url: "https://careers.wsgc.com/pottery-barn"
+    platform: "custom"
+    enabled: true
+
+  - name: "West Elm"
+    careers_url: "https://careers.wsgc.com/west-elm"
+    platform: "custom"
+    enabled: true
+
+  - name: "Toll Brothers"
+    careers_url: "https://www.tollbrothers.com/careers"
+    platform: "custom"
+    enabled: true
+
+  - name: "Taylor Morrison"
+    careers_url: "https://www.taylormorrison.com/careers"
+    platform: "custom"
+    enabled: true
+
+  - name: "KB Home"
+    careers_url: "https://www.kbhome.com/careers"
+    platform: "custom"
+    enabled: true
+
+  - name: "Floor & Decor"
+    careers_url: "https://careers.flooranddecor.com/"
+    platform: "custom"
+    enabled: true
+
+  - name: "Ferguson Bath, Kitchen & Lighting Gallery"
+    careers_url: "https://careers.fergusonenterprises.com/"
+    platform: "custom"
+    enabled: true
+
+  - name: "Visual Comfort"
+    careers_url: "https://www.visualcomfort.com/careers"
+    platform: "custom"
+    enabled: true
+
+# Title filters
+title_filter:
+  positive:
+    - "design"
+    - "interior"
+    - "staging"
+    - "stager"
+    - "showroom"
+    - "coordinator"
+    - "consultant"
+    - "assistant"
+    - "office manager"
+    - "client services"
+    - "project coordinator"
+    - "admin"
+  negative:
+    - "autocad"
+    - "revit"
+    - "architect"
+    - "engineer"
+    - "nurse"
+    - "medical"
+    - "dental"
+    - "cashier"
+    - "warehouse"
+    - "driver"
+    - "janitor"

@@ -1,0 +1,83 @@
+# Callie Wells — Career-Ops Profile
+# Adapted from career-ops by santifer/career-ops
+
+candidate:
+  name: "Callie Nichole Wells"
+  email: "CallieWells17@gmail.com"
+  phone: "949-557-9014"
+  linkedin: "www.linkedin.com/in/callie-wells17"
+  location: "Rancho Santa Margarita, CA 92688"
+  timezone: "America/Los_Angeles"
+
+search:
+  radius_miles: 50
+  min_salary: 60000
+  include_part_time: true  # if full-time potential
+  fromage_days: 1  # daily lookback
+
+targets:
+  roles:
+    - "Interior Design Consultant"
+    - "Interior Designer Assistant"
+    - "Home Stager"
+    - "Design Coordinator"
+    - "In-Home Design Consultant"
+    - "Showroom Manager"
+    - "Project Coordinator (Design Firm)"
+    - "Client Services Coordinator"
+    - "Office Manager (Design)"
+    - "Design Consultant (Remodeling)"
+    - "Administrative Coordinator"
+
+  archetypes:
+    design_sales:
+      description: "Sales-focused design roles with commission or revenue targets"
+      keywords: ["sales", "consultant", "showroom", "in-home", "remodel", "design consultant"]
+      resume: "callie-wells-resume-design-sales.pdf"
+      lead_with: "$800K+ in design sales, Gold Spirit Award, in-home consultations"
+
+    design_assistant:
+      description: "Support roles for lead designers, staging, hands-on design work"
+      keywords: ["assistant", "staging", "stager", "home stag", "junior designer"]
+      resume: "callie-wells-resume-design-assistant.pdf"
+      lead_with: "5 years across 3 design firms, space planning, vendor coordination"
+
+    coordinator:
+      description: "Administrative, project coordination, office management"
+      keywords: ["coordinator", "admin", "office manager", "events", "logistics", "operations"]
+      resume: "callie-wells-resume-coordinator.pdf"
+      lead_with: "BBA from ASU, multi-project management, cross-functional communication"
+
+exclusions:
+  keywords:
+    - "autocad"
+    - "auto cad"
+    - "revit"
+    - "retail store"
+    - "retail associate"
+    - "cashier"
+    - "senior architect"
+    - "licensed architect"
+    - "civil engineer"
+    - "mechanical engineer"
+    - "registered nurse"
+    - "medical"
+    - "dental"
+  companies: []  # none excluded yet
+
+scoring:
+  weights:
+    cv_match: 0.30
+    role_fit: 0.25
+    compensation: 0.20
+    location: 0.15
+    culture: 0.10
+  thresholds:
+    auto_apply: 4.0     # score >= this: generate everything and email
+    recommend: 3.5       # score >= this: create job file, send kit to Callie
+    skip: 3.5            # score < this: log but don't apply
+
+followup:
+  first_followup_days: 5   # calendar days after application
+  second_followup_days: 10
+  max_followups: 2
