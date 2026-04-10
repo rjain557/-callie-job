@@ -3,4 +3,11 @@
 - **Applied:** Pre-pipeline (before 2026-04-07)
 - **Location:** Irvine, CA
 - **Est. Pay:** Commission-based
-- **Status:** Applied externally
+- **Method:** Indeed
+
+## Application Status
+
+- [ ] Cover letter written
+- [x] Applied via Indeed (pre-pipeline)
+- [ ] Email sent
+- [ ] Follow-up scheduled

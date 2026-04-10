@@ -28,7 +28,7 @@
 - Stable career pivot with excellent benefits
 
 ## Application Status
-- [ ] Cover letter written
+- [x] Cover letter written (2026-04-07)
 - [ ] Applied via Indeed
-- [ ] Email sent
-- [ ] Follow-up scheduled
+- [x] Email sent to recruitment@uci.edu (2026-04-07)
+- [x] Follow-up scheduled (2026-04-10)

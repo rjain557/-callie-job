@@ -8,9 +8,9 @@
 - **LinkedIn:** www.linkedin.com/in/callie-wells17
 
 ## Search Criteria
-- **Radius:** 25 miles from Rancho Santa Margarita, CA
-- **Type:** Full-time
-- **Min Salary:** $60,000
+- **Radius:** 50 miles from Rancho Santa Margarita, CA
+- **Type:** Full-time and part-time (with full-time potential)
+- **Min Salary:** $60,000 (flexible for part-time with growth path)
 - **Excluded:** Retail stores, roles requiring AutoCAD
 - **Cover Letter Tone:** Professional and warm
 

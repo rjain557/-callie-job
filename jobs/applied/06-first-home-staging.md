@@ -26,7 +26,7 @@
 - Project management and timeline experience
 
 ## Application Status
-- [ ] Cover letter written
+- [x] Cover letter written (2026-04-07)
 - [ ] Applied via Indeed
-- [ ] Email sent
-- [ ] Follow-up scheduled
+- [x] Email sent to info@firsthomestaging.com (2026-04-07)
+- [x] Follow-up scheduled (2026-04-10)

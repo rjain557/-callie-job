@@ -121,7 +121,8 @@ def build_cover_letter(output_path, company, title, greeting, paragraphs):
     ))
 
     # Date and addressee
-    story.append(Paragraph("April 7, 2026", s["body"]))
+    from datetime import datetime
+    story.append(Paragraph(datetime.now().strftime("%B %d, %Y"), s["body"]))
     story.append(Spacer(1, 4))
     story.append(Paragraph(f"Re: {title}", s["section_head"]))
     story.append(Spacer(1, 2))
@@ -378,6 +379,45 @@ def main():
             "Over the past three years at Ethan Allen, I built a design consultancy practice that generated over $800,000 in sales, earning the 2025 Gold Spirit Award. My success was rooted in building lasting relationships with clients and design professionals, providing knowledgeable guidance on product selections, and maintaining the kind of elevated, organized showroom experience that luxury brands require. I understand the language of the design trade and the expectations of the interior designers and clients who visit a showroom like yours.",
             "What excites me about this role is the leadership opportunity. Throughout my career, I've naturally gravitated toward operational coordination \u2014 at Vintage Design Inc., I managed front desk operations, scheduling, and supply ordering, and at Ethan Allen, I developed systems for managing my client pipeline and project workflow that kept everything running efficiently. I'm confident in my ability to build and lead a sales team while maintaining the high standards Visual Comfort is known for.",
             "I would welcome the opportunity to discuss how my sales track record and operational experience could contribute to the success of your Laguna Niguel showroom. I'm available at 949-557-9014 or CallieWells17@gmail.com.",
+        ]
+    )
+
+    # ── 11. The Tailored Closet ──
+    build_cover_letter(
+        os.path.join(cl_dir, "11-tailored-closet.pdf"),
+        "The Tailored Closet / PremierGarage", "In Home Sales & Design Consultant",
+        "Dear Tailored Closet Hiring Team,",
+        [
+            "I'm writing to express my interest in the In Home Sales & Design Consultant position with your Greater Orange County team. Your model of providing pre-set appointments and comprehensive training, combined with the opportunity to help homeowners transform their spaces with custom organizational solutions, is exactly the kind of design-forward sales environment where I thrive.",
+            "Over the past three years at Ethan Allen, I built a successful design consultancy practice around in-home consultations, earning the 2025 Gold Spirit Award for generating over $800,000 in design sales. My daily work involved sitting with homeowners in their living spaces, understanding their needs and frustrations, and presenting tailored design solutions that made their homes work better for their lives. That consultative approach \u2014 building trust, asking the right questions, and closing with confidence \u2014 is precisely what your role calls for.",
+            "What excites me about The Tailored Closet is the focus on functional, life-improving design. Custom closets and garage solutions solve real organizational challenges for homeowners, and I love the idea of helping people see the potential in spaces they've overlooked. My background in space planning and material selections gives me a head start in presenting options that feel both practical and elevated. Combined with leads being provided so I can focus entirely on the client experience, I'm confident I can deliver strong results quickly.",
+            "I'd welcome the chance to discuss how my sales track record and in-home consultation experience could contribute to your team's growth. I'm available at 949-557-9014 or CallieWells17@gmail.com.",
+        ]
+    )
+
+    # ── 12. The Staff Pad ──
+    build_cover_letter(
+        os.path.join(cl_dir, "12-staff-pad.pdf"),
+        "The Staff Pad", "Client Services Coordinator (Logistics & Fine Art)",
+        "Dear Staff Pad Hiring Team,",
+        [
+            "I'm writing to apply for the Client Services Coordinator position supporting your fine art logistics client. The intersection of client services, project coordination, and the art and design world is a natural fit for my background, and I'm excited about the opportunity to bring my organizational skills and design-industry experience to this role.",
+            "For the past five years, I've worked in client-facing coordination roles across three interior design firms. At Ethan Allen, I managed multiple concurrent projects from initial client consultation through final delivery, maintaining detailed documentation, processing orders, coordinating vendor logistics, and serving as the primary point of contact throughout. Before that, at Vintage Design Inc., I handled front desk operations, scheduled consultations, managed supply ordering, and coordinated between clients, installers, and vendors daily. These experiences have given me exactly the skill set this role requires: managing projects end-to-end, handling quotes and invoicing workflows, and maintaining the professional client communication standards that a fine art environment demands.",
+            "My Bachelor of Business Administration from Arizona State University provides the foundation, and my interior design background gives me an instinctive understanding of the care and attention required when handling valuable, design-sensitive items. I'm proficient in Microsoft Office, highly organized with documentation and data entry, and comfortable managing multiple workstreams simultaneously without letting details slip.",
+            "I would welcome the opportunity to discuss how my experience could add value to your team. I'm available at 949-557-9014 or CallieWells17@gmail.com.",
+        ]
+    )
+
+    # ── 13. Mission Tile West ──
+    build_cover_letter(
+        os.path.join(cl_dir, "13-mission-tile-west.pdf"),
+        "Mission Tile West", "Tile Sales - Design Consultant",
+        "Dear Mission Tile West Team,",
+        [
+            "I'm reaching out to express my interest in the Tile Sales - Design Consultant position at your South Pasadena showroom. The combination of design consultation and sales in a showroom environment is exactly the kind of role where my experience and personality align perfectly.",
+            "Over the past three years at Ethan Allen, I worked in a luxury showroom helping clients select materials, finishes, and furnishings for their homes. I earned the 2025 Gold Spirit Award for generating over $800,000 in design sales, building that success on genuine client relationships and a consultative approach to the selection process. Tile is a natural extension of the material and finish work I've done throughout my career \u2014 helping homeowners and designers choose surfaces that bring their vision to life is the same conversation, just with a different medium.",
+            "What draws me to Mission Tile West is the blend of design expertise and relationship-driven sales. I'm outgoing, self-motivated, and genuinely energized by helping people make decisions they're excited about. I've built strong relationships with both homeowners and trade professionals, and I understand the different ways each group approaches the selection process. My experience managing multiple client projects ensures I can keep everything organized across concurrent jobs without dropping details, and I take pride in maintaining the kind of polished, welcoming showroom experience that keeps clients coming back.",
+            "I'd love to visit the showroom, meet the team, and discuss how I can contribute to Mission Tile West's continued success. I'm available at 949-557-9014 or CallieWells17@gmail.com.",
         ]
     )
 

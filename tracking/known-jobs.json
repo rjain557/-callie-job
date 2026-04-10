@@ -21,9 +21,20 @@
     "administrative coordinator:2026-04-08",
     "office manager design:2026-04-08",
     "client services coordinator:2026-04-08",
-    "design consultant remodeling:2026-04-08"
+    "design consultant remodeling:2026-04-08",
+    "interior design consultant:2026-04-09",
+    "interior designer assistant:2026-04-09",
+    "design coordinator residential:2026-04-09",
+    "home staging:2026-04-09",
+    "in-home design consultant:2026-04-09",
+    "showroom manager design:2026-04-09",
+    "project coordinator design firm:2026-04-09",
+    "administrative coordinator:2026-04-09",
+    "office manager design:2026-04-09",
+    "client services coordinator:2026-04-09",
+    "design consultant remodeling:2026-04-09"
   ],
-  "last_scan": "2026-04-08T07:00:02.024653",
+  "last_scan": "2026-04-09T20:32:08.769145",
   "applied": {
     "01-shugarmans-bath": "2026-04-07",
     "02-orange-coast-interior-design": "2026-04-07",
@@ -37,7 +48,114 @@
     "10-visual-comfort": "2026-04-07",
     "toll-brothers": "2026-04-07",
     "ll-design-co": "2026-04-07",
-    "sea-pointe": "2026-04-07"
+    "sea-pointe": "2026-04-07",
+    "11-tailored-closet": "2026-04-09",
+    "12-staff-pad": "2026-04-09",
+    "13-mission-tile-west": "2026-04-09"
   },
-  "followups_sent": []
+  "email_sent": {
+    "01-shugarmans-bath": {
+      "to": "careers@shugarmansbath.com",
+      "date": "2026-04-07",
+      "cover_letter": "01-shugarmans-bath.pdf",
+      "resume": "design-sales"
+    },
+    "02-orange-coast-interior-design": {
+      "to": "info@orangecoastinteriordesign.com",
+      "date": "2026-04-07",
+      "cover_letter": "02-orange-coast-interior-design.pdf",
+      "resume": "design-assistant"
+    },
+    "03-manifested-interiors": {
+      "to": "info@manifestedinteriors.com",
+      "date": "2026-04-07",
+      "cover_letter": "03-manifested-interiors.pdf",
+      "resume": "design-sales"
+    },
+    "04-dreamcatcher-remodeling": {
+      "to": "info@dreamcatcher-remodeling.com",
+      "date": "2026-04-07",
+      "cover_letter": "04-dreamcatcher-remodeling.pdf",
+      "resume": "design-sales"
+    },
+    "05-debra-lauren-design": {
+      "to": "info@debralaurendesign.com",
+      "date": "2026-04-07",
+      "cover_letter": "05-debra-lauren-design.pdf",
+      "resume": "design-assistant"
+    },
+    "06-first-home-staging": {
+      "to": "info@firsthomestaging.com",
+      "date": "2026-04-07",
+      "cover_letter": "06-first-home-staging.pdf",
+      "resume": "design-assistant"
+    },
+    "07-stage-to-amaze": {
+      "to": "debbie@stagetoamazeinc.com",
+      "date": "2026-04-07",
+      "cover_letter": "07-stage-to-amaze.pdf",
+      "resume": "design-assistant"
+    },
+    "08-taylor-design": {
+      "to": "oc@wearetaylor.com",
+      "date": "2026-04-07",
+      "cover_letter": "08-taylor-design.pdf",
+      "resume": "coordinator"
+    },
+    "09-uc-irvine": {
+      "to": "recruitment@uci.edu",
+      "date": "2026-04-07",
+      "cover_letter": "09-uc-irvine.pdf",
+      "resume": "coordinator"
+    },
+    "10-visual-comfort": {
+      "to": "careers@visualcomfort.com",
+      "date": "2026-04-07",
+      "cover_letter": "10-visual-comfort.pdf",
+      "resume": "design-sales"
+    },
+    "13-mission-tile-west": {
+      "to": "george@missiontilewest.com",
+      "date": "2026-04-09",
+      "cover_letter": "13-mission-tile-west.pdf",
+      "resume": "design-sales"
+    }
+  },
+  "indeed_kit_sent": {
+    "11-tailored-closet": {
+      "date": "2026-04-09",
+      "merged_pdf": "11-tailored-closet-full.pdf",
+      "resume": "design-sales",
+      "awaiting_callie_submit": true
+    },
+    "12-staff-pad": {
+      "date": "2026-04-09",
+      "merged_pdf": "12-staff-pad-full.pdf",
+      "resume": "coordinator",
+      "awaiting_callie_submit": true
+    },
+    "13-mission-tile-west": {
+      "date": "2026-04-09",
+      "merged_pdf": "13-mission-tile-west-full.pdf",
+      "resume": "design-sales",
+      "awaiting_callie_submit": true
+    }
+  },
+  "indeed_applied": {
+    "toll-brothers": {
+      "date": "pre-pipeline",
+      "method": "Indeed"
+    },
+    "ll-design-co": {
+      "date": "pre-pipeline",
+      "method": "Indeed"
+    },
+    "sea-pointe": {
+      "date": "pre-pipeline",
+      "method": "Indeed"
+    }
+  },
+  "followups_sent": [],
+  "seen_jobs": {
+  }
 }

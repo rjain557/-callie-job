@@ -1,6 +1,6 @@
 # Application Log
 
-Last Updated: 2026-04-07
+Last Updated: 2026-04-09
 
 ## Sent via Gmail (CallieWells17@gmail.com)
 
@@ -16,6 +16,15 @@ Last Updated: 2026-04-07
 | 2026-04-07 | Taylor Design | Project Coordinator | oc@wearetaylor.com | 08-taylor-design.pdf | coordinator | SENT |
 | 2026-04-07 | UC Irvine | Events & Admin Coordinator | recruitment@uci.edu | 09-uc-irvine.pdf | coordinator | SENT |
 | 2026-04-07 | Visual Comfort & Co | Showroom Manager | careers@visualcomfort.com | 10-visual-comfort.pdf | design-sales | SENT |
+| 2026-04-09 | Mission Tile West | Tile Sales - Design Consultant | george@missiontilewest.com | 13-mission-tile-west.pdf | design-sales | SENT |
+
+## Indeed Kits Sent to Callie (Awaiting Her Submission)
+
+| Date | Company | Title | Merged PDF | Resume | Status |
+|------|---------|-------|-----------|--------|--------|
+| 2026-04-09 | The Tailored Closet | In Home Sales & Design Consultant | 11-tailored-closet-full.pdf | design-sales | KIT SENT |
+| 2026-04-09 | The Staff Pad | Client Services Coordinator | 12-staff-pad-full.pdf | coordinator | KIT SENT |
+| 2026-04-09 | Mission Tile West | Tile Sales - Design Consultant | 13-mission-tile-west-full.pdf | design-sales | KIT SENT |
 
 ## Applied Externally (Pre-Pipeline)
 
@@ -26,10 +35,16 @@ Last Updated: 2026-04-07
 | Pre-pipeline | Sea Pointe | Remodeling Design Consultant | Indeed | Applied |
 
 ## Follow-Up Schedule
-- 2026-04-10: Send follow-up emails to all 10 (3 business days)
-- 2026-04-14: Second follow-up for no-response (1 week)
 
-## Notes
+- 2026-04-10: Send follow-up emails to original 10 (3 business days) — TOMORROW
+- 2026-04-14: Second follow-up for original 10 (1 week)
+- 2026-04-14: First follow-up for Mission Tile West (3 business days)
+
+## Tracking Notes
+
+- **Single source of truth:** `known-jobs.json` tracks all email_sent, indeed_applied, and followup status
+- **Job files:** Each job .md file in `jobs/applied/` has an Application Status checklist
+- **Pipeline auto-updates:** `daily_job_scan.py` now auto-marks checkboxes when emails are sent
 - Taylor Design also has a portal at jobs.wearetaylor.com — recommend applying there too
 - UC Irvine official portal at jobs.uci.edu — recommend applying there too
 - Some info@ emails may not reach hiring managers directly — Indeed apply recommended as backup

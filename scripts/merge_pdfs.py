@@ -23,6 +23,9 @@ JOBS = [
     ("08-taylor-design.pdf", "callie-wells-resume-coordinator.pdf", "08-taylor-design-full.pdf"),
     ("09-uc-irvine.pdf", "callie-wells-resume-coordinator.pdf", "09-uc-irvine-full.pdf"),
     ("10-visual-comfort.pdf", "callie-wells-resume-design-sales.pdf", "10-visual-comfort-full.pdf"),
+    ("11-tailored-closet.pdf", "callie-wells-resume-design-sales.pdf", "11-tailored-closet-full.pdf"),
+    ("12-staff-pad.pdf", "callie-wells-resume-coordinator.pdf", "12-staff-pad-full.pdf"),
+    ("13-mission-tile-west.pdf", "callie-wells-resume-design-sales.pdf", "13-mission-tile-west-full.pdf"),
 ]
 
 print("Merging cover letters + resumes for Indeed uploads...")
