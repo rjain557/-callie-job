@@ -19,7 +19,7 @@
 - Resume type: design-sales
 
 ## Application Status
-- [ ] Cover letter written
-- [ ] Applied via LinkedIn
+- [x] Cover letter written (2026-04-10)
+- [ ] Applied via LinkedIn (kit emailed to Callie 2026-04-10)
 - [ ] Email sent
 - [ ] Follow-up scheduled

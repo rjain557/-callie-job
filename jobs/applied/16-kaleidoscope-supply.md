@@ -20,7 +20,7 @@
 - Resume type: design-assistant
 
 ## Application Status
-- [ ] Cover letter written
-- [ ] Applied via Indeed
+- [x] Cover letter written (2026-04-10)
+- [ ] Applied via Indeed (kit emailed to Callie 2026-04-10)
 - [ ] Email sent
 - [ ] Follow-up scheduled
