@@ -1,6 +1,6 @@
 # Application Log
 
-Last Updated: 2026-04-09
+Last Updated: 2026-04-10
 
 ## Sent via Gmail (CallieWells17@gmail.com)
 
@@ -25,6 +25,12 @@ Last Updated: 2026-04-09
 | 2026-04-09 | The Tailored Closet | In Home Sales & Design Consultant | 11-tailored-closet-full.pdf | design-sales | KIT SENT |
 | 2026-04-09 | The Staff Pad | Client Services Coordinator | 12-staff-pad-full.pdf | coordinator | KIT SENT |
 | 2026-04-09 | Mission Tile West | Tile Sales - Design Consultant | 13-mission-tile-west-full.pdf | design-sales | KIT SENT |
+| 2026-04-10 | Express Flooring | In-Home Design Consultant | 14-express-flooring-full.pdf | design-sales | KIT SENT |
+| 2026-04-10 | Waterworks | Design Consultant, RH Channel | 15-waterworks-full.pdf | design-sales | KIT SENT |
+| 2026-04-10 | Kaleidoscope Supply | Interior Design Assistant | 16-kaleidoscope-supply-full.pdf | design-assistant | KIT SENT |
+| 2026-04-10 | FARNEAR DESIGN | Assistant Interior Designer | 17-farnear-design-full.pdf | design-assistant | KIT SENT |
+| 2026-04-10 | SPF Screens & Awnings | Design Consultant | 19-spf-screens-full.pdf | design-sales | KIT SENT |
+| 2026-04-10 | Mode Renovation LLC | Permit & Design Coordinator | 20-mode-renovation-full.pdf | coordinator | KIT SENT |
 
 ## Applied Externally (Pre-Pipeline)
 
