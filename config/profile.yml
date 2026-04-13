@@ -15,6 +15,19 @@ search:
   include_part_time: true  # if full-time potential
   fromage_days: 1  # daily lookback
 
+  # Remote-only search (all 50 states)
+  include_remote: true
+  remote_scope: "united_states"
+  remote_roles:
+    - "interior designer"
+    - "interior design consultant"
+    - "interior design specialist"
+    - "interior design assistant"
+    - "virtual interior designer"
+    - "e-design interior"
+    - "spatial designer"
+  remote_min_salary: 50000  # slightly lower threshold for remote roles
+
 targets:
   roles:
     - "Interior Design Consultant"

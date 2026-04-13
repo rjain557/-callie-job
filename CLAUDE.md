@@ -69,7 +69,21 @@ Each job gets a .md file in `jobs/active/` (then moved to `jobs/applied/` after 
 
 ## Daily Pipeline (Cron at 6:57 AM)
 
-1. Scan Indeed + LinkedIn (+ others when accessible) for new postings
+TWO scan scopes run each morning:
+
+**A. Local scope** — 50mi from Rancho Santa Margarita, CA
+- Indeed + LinkedIn
+- 11 + 8 queries (see portals.yml)
+- Full-time and part-time (with growth)
+
+**B. Remote scope** — All 50 states, remote-only interior design roles
+- Indeed with `remotejob` filter
+- LinkedIn with `f_WT=2` (remote filter)
+- Queries: "interior designer", "interior design consultant", "virtual interior designer", "e-design interior", "spatial designer", "interior design specialist", "interior design assistant"
+- No location restriction, $50K+ threshold
+
+Pipeline steps:
+1. Scan both scopes for new postings
 2. Check job-inbox.json for manually queued leads
 3. Filter against exclusions and already-seen jobs
 4. Score each lead 1-5 using profile.yml weights
@@ -80,6 +94,14 @@ Each job gets a .md file in `jobs/active/` (then moved to `jobs/applied/` after 
 9. Send follow-ups for jobs applied 5+ days ago
 10. Move processed jobs to applied/, update all tracking
 11. Commit and push to git
+
+## Remote Role Scoring Notes
+
+Remote roles are often higher-paying but come with trade-offs. ALWAYS flag the following in the email to Callie:
+- **1099/contractor vs W-2 employee** — 1099 means no benefits, self-employment tax
+- **Actual remote vs "remote with travel"** — some "remote" roles require 50%+ travel
+- **Staffing platforms** (Crossover, Toptal, etc.) — time tracking, performance monitoring
+- **Parent company concerns** — research Glassdoor/Reddit if uncertain
 
 ## Git Convention
 

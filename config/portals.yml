@@ -48,6 +48,41 @@ job_boards:
       - "client services coordinator"
       - "in-home design consultant"
 
+  # ── Indeed REMOTE (all 50 states) ──
+  indeed_remote:
+    enabled: true
+    base_url: "https://www.indeed.com/jobs"
+    params:
+      l: "Remote"
+      remotejob: "032b3046-06a3-4876-8dfd-474eb5e7ed11"  # remote-only filter
+      sort: "date"
+      fromage: 1
+    queries:
+      - "interior design remote"
+      - "remote interior designer"
+      - "virtual interior designer"
+      - "online interior designer"
+      - "remote interior design consultant"
+      - "e-design interior designer"
+
+  # ── LinkedIn REMOTE (all 50 states) ──
+  linkedin_remote:
+    enabled: true
+    base_url: "https://www.linkedin.com/jobs/search"
+    params:
+      location: "United States"
+      f_WT: "2"  # 2 = Remote
+      f_TPR: "r86400"
+      sortBy: "DD"
+    queries:
+      - "interior designer"
+      - "interior design consultant"
+      - "interior design specialist"
+      - "virtual interior designer"
+      - "e-design interior"
+      - "spatial designer"
+      - "interior design assistant"
+
   # ── ZipRecruiter ──
   ziprecruiter:
     enabled: true
