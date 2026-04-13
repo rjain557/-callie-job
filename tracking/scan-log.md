@@ -15,3 +15,4 @@
 | 2026-04-12 manual | 19 | 0 | 0 | 0 | 0 | No qualifying (all AutoCAD/retail/wrong fit) |
 | 2026-04-13 07:00 | 0 | 0 | 0 | 0 | 0 | Cron fire, no action |
 | 2026-04-13 manual | 19 | 0 | 0 | 0 | 0 | No qualifying leads |
+| 2026-04-13 rerun | 19 | 0 | 0 | 0 | 0 | Same 24hr window, same 0 results. MTW followup due 4/14 |
