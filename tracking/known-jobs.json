@@ -182,6 +182,25 @@
       "merged_pdf": "20-mode-renovation-full.pdf",
       "resume": "coordinator",
       "awaiting_callie_submit": true
+    },
+    "21-crossover-2hl": {
+      "date": "2026-04-13",
+      "merged_pdf": "21-crossover-2hl-full.pdf",
+      "resume": "design-sales",
+      "awaiting_callie_submit": true,
+      "notes": "Remote, 1099 contractor, 50-70% travel - flagged to Callie"
+    },
+    "22-south-bay-design-center": {
+      "date": "2026-04-14",
+      "merged_pdf": "22-south-bay-design-center-full.pdf",
+      "resume": "design-sales",
+      "awaiting_callie_submit": true
+    },
+    "23-natuzzi-americas": {
+      "date": "2026-04-14",
+      "merged_pdf": "23-natuzzi-americas-full.pdf",
+      "resume": "design-sales",
+      "awaiting_callie_submit": true
     }
   },
   "indeed_applied": {
@@ -212,6 +231,19 @@
     "10-visual-comfort",
     "13-mission-tile-west"
   ],
+  "applied_today": {
+    "21-crossover-2hl": "2026-04-13",
+    "22-south-bay-design-center": "2026-04-14",
+    "23-natuzzi-americas": "2026-04-14"
+  },
+  "seen_jobs_extra": {
+    "crossover:interior-design-specialist": "2026-04-13",
+    "south-bay-design-center:design-sales-consultant": "2026-04-14",
+    "natuzzi-americas:store-manager": "2026-04-14",
+    "staples:designer-interior-remote": "2026-04-14-excluded-autocad",
+    "concourse-federal:interior-designer": "2026-04-14-excluded-autocad",
+    "north-south-consulting:jr-healthcare-interior": "2026-04-14-excluded-healthcare"
+  },
   "seen_jobs": {
     "express-flooring:in-home-design-consultant": "2026-04-10",
     "waterworks:design-consultant-rh-channel": "2026-04-10",
