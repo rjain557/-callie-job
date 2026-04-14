@@ -67,6 +67,31 @@ Each job gets a .md file in `jobs/active/` (then moved to `jobs/applied/` after 
 - Medical/dental/nursing
 - Under $40K annual (unless part-time with growth path)
 
+## Self-Improving Loop (MANDATORY)
+
+**READ at start of every pipeline run:** `tracking/lessons-learned.md`
+
+Apply all active lessons before scanning. This file accumulates:
+- Keywords that surface qualifying leads (prioritize these)
+- Keywords that waste time (deprioritize/skip)
+- Exclusion patterns (auto-reject before scoring)
+- Remote role red flags (always warn Callie)
+- Process improvements (gws quirks, scan log format, etc.)
+- New scanning ideas to try
+
+**WRITE at end of every pipeline run:** Append new lessons to `tracking/lessons-learned.md`
+
+After each run, add entries for:
+- New keywords that worked (or didn't)
+- New companies worth tracking
+- New exclusion patterns discovered
+- Process issues found and how you fixed them
+- Ideas for future improvements
+
+Format: `- YYYY-MM-DD: <lesson> — <why/context>`
+
+Never delete lessons. Mark obsolete ones with `[OBSOLETE]` and a reason.
+
 ## Daily Pipeline (Cron at 6:57 AM)
 
 TWO scan scopes run each morning:
