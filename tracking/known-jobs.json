@@ -201,6 +201,41 @@
       "merged_pdf": "23-natuzzi-americas-full.pdf",
       "resume": "design-sales",
       "awaiting_callie_submit": true
+    },
+    "24-talentpop": {
+      "date": "2026-04-14",
+      "merged_pdf": "24-talentpop-full.pdf",
+      "resume": "coordinator",
+      "awaiting_callie_submit": true,
+      "notes": "EA to Founders, RSM (home city)"
+    },
+    "25-applied-medical": {
+      "date": "2026-04-14",
+      "merged_pdf": "25-applied-medical-full.pdf",
+      "resume": "coordinator",
+      "awaiting_callie_submit": true,
+      "notes": "EA at Applied Medical, RSM (home city), pure admin not medical"
+    },
+    "26-berkadia": {
+      "date": "2026-04-14",
+      "merged_pdf": "26-berkadia-full.pdf",
+      "resume": "coordinator",
+      "awaiting_callie_submit": true,
+      "notes": "Sr Admin Assistant, Irvine, $80-100K"
+    },
+    "27-experian": {
+      "date": "2026-04-14",
+      "merged_pdf": "27-experian-full.pdf",
+      "resume": "coordinator",
+      "awaiting_callie_submit": true,
+      "notes": "EA Hybrid, Costa Mesa"
+    },
+    "28-pimco": {
+      "date": "2026-04-14",
+      "merged_pdf": "28-pimco-full.pdf",
+      "resume": "coordinator",
+      "awaiting_callie_submit": true,
+      "notes": "Admin Assistant, Newport Beach, tier-1 finance"
     }
   },
   "indeed_applied": {
