@@ -48,6 +48,31 @@ Each job gets a .md file in `jobs/active/` (then moved to `jobs/applied/` after 
 - Contains: job details, why Callie fits, application status checkboxes
 - Checkboxes are updated with dates and email addresses when actions happen
 
+## Callie's Actual Experience (CRITICAL for fit scoring)
+
+**READ `config/profile.yml` experience section before scoring ANY job.**
+
+Callie's YoE by domain:
+- **Interior design:** 5 years (mostly consultant/assistant, not manager)
+- **Design sales:** 3 years (Ethan Allen only)
+- **Admin/coordination:** ~2 years (Vintage Design Coordinator front desk)
+- **People management:** 0 years (no direct reports, informal mentoring only)
+- **Remote/virtual:** 0 years (always in-person)
+
+### Fit Rules (MANDATORY before scoring)
+
+1. **Senior/Sr./Lead in admin domain** = requires 5+ yrs pure admin → Callie has 2 → SKIP
+2. **Senior/Sr./Lead in design domain** = requires 5+ yrs pure design → Callie has 5 → OK but flag as borderline
+3. **Director/VP/Chief** = 8-10+ yrs → SKIP (always)
+4. **Manager titles** = typically require 3-5 yrs mgmt experience → Callie has 0 formal → stretch, flag in email
+5. **If posting says "X+ years required":**
+   - Gap ≤ 2 yrs: apply normally
+   - Gap 3-4 yrs: apply but flag "this is a stretch because job wants X yrs, you have Y"
+   - Gap 5+ yrs: SKIP, log as "poor fit" in lessons-learned
+
+**NEVER conflate "5 yrs total experience" with "5 yrs in specific domain".**
+Berkadia's "Sr Admin Assistant" wanted 5 yrs pure ADMIN. Callie's 5 yrs is mostly DESIGN. Not a fit.
+
 ## Resume Types
 
 | Type | File | Use For |

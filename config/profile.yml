@@ -8,6 +8,60 @@ candidate:
   linkedin: "www.linkedin.com/in/callie-wells17"
   location: "Rancho Santa Margarita, CA 92688"
   timezone: "America/Los_Angeles"
+  graduation_year: 2019  # BBA Arizona State University
+
+# Actual years of experience by domain (derived from resume)
+# Use these to filter out jobs that require more experience than she has
+experience:
+  total_years: 6  # Since 2019 graduation
+  by_domain:
+    # Pure DESIGN experience (Ethan Allen consultant + Goff + Vintage design work)
+    interior_design: 5  # 3yr Ethan Allen + 1.5yr Goff + ~0.5yr design portions of Vintage
+    # Pure SALES experience (Ethan Allen design consultancy)
+    design_sales: 3  # Ethan Allen only — client-facing revenue-driving role
+    # Pure ADMIN/coordination experience (Vintage front desk + peripheral admin elsewhere)
+    admin_coordination: 2  # ~1.5 yr Vintage Design Coordinator + partial admin at Ethan Allen
+    # Leadership/management experience (INFORMAL only — never had "Manager" title)
+    people_management: 0  # She mentored junior consultants informally but no direct reports
+    # Remote/virtual work experience
+    remote: 0  # Always in-person roles
+
+# Fit rules based on posting's required experience vs Callie's actual
+fit_rules:
+  # "Senior" / "Sr." / "Lead" titles usually require 5+ yrs in that specific domain.
+  # If job says "Senior Administrative Assistant" it wants 5+ yrs pure admin — Callie has 2.
+  # If job says "Senior Interior Designer" it wants 5+ yrs pure design — Callie has 5, OK.
+  senior_title_requires_domain_years: 5
+
+  # Max gap between required and actual YoE before we skip or flag as stretch
+  max_yoe_gap_for_apply: 2    # within 2 yrs = apply normally
+  max_yoe_gap_for_stretch: 4  # 3-4 yrs over = apply but flag as "stretch" in email
+  # 5+ yrs over = skip (too far out of reach)
+
+  # Explicit fit mapping
+  good_fit_titles:
+    - "Interior Design Consultant"
+    - "Interior Designer (mid-level)"
+    - "Interior Design Assistant"
+    - "Design Consultant"
+    - "Design Coordinator"
+    - "Home Stager"
+    - "Showroom Consultant"
+    - "Administrative Assistant"     # entry to mid
+    - "Executive Assistant"           # entry to mid
+    - "Project Coordinator"           # entry to mid
+
+  stretch_fit_titles:  # apply but flag in email
+    - "Showroom Manager"              # wants mgmt experience
+    - "Senior Interior Designer"       # borderline, she has 5 yrs
+    - "Store Manager"                  # needs mgmt experience
+
+  poor_fit_titles:  # skip unless very compelling
+    - "Senior Administrative Assistant"    # wants 5+ yrs pure admin, she has 2
+    - "Senior Executive Assistant"         # same
+    - "Director of Design"                  # wants 8-10+ yrs
+    - "Chief Design Officer"                # exec level
+    - "VP of Design"                        # exec level
 
 search:
   radius_miles: 50
@@ -60,6 +114,9 @@ targets:
       keywords: ["coordinator", "admin", "office manager", "events", "logistics", "operations"]
       resume: "callie-wells-resume-coordinator.pdf"
       lead_with: "BBA from ASU, multi-project management, cross-functional communication"
+      # WARNING: Only target ENTRY to MID-level admin roles (0-3 yrs required)
+      # Callie has only ~2 yrs pure admin (Vintage Design Coordinator)
+      # Skip titles with "Senior", "Sr.", "Lead" in admin domain
 
 exclusions:
   keywords:
