@@ -27,6 +27,7 @@ Keywords that have surfaced qualifying leads (>=3.5 score):
 - 2026-04-14: "design consultant remodeling" — found South Bay Design Center (4.6)
 - 2026-04-14: Generic LinkedIn showroom search with company filter — found Natuzzi (4.2)
 - 2026-04-14: Kitchen & Bath Showroom roles consistently high-scoring — prioritize these
+- 2026-04-14: ADDED: "administrative assistant" / "executive assistant" at 25mi radius — pure admin roles leveraging Callie's BBA + coordination experience. Tight radius because admin work requires short commute. NOTE: different from "administrative coordinator design" (which failed) — this is pure admin, not design-adjacent
 
 ## Search Keywords That Don't Work
 
@@ -77,6 +78,7 @@ Things to ALWAYS warn Callie about in the kit email:
 - 2026-04-12: ASID career center returns 404 — URL changed or requires auth
 - 2026-04-13: LinkedIn "home staging" search returns mostly real estate agents — add stronger negative filter or use "home stager" instead
 - 2026-04-14: Indeed often shows only one detail-view per WebFetch — may need to parse the jobs list differently in future
+- 2026-04-14: gws OAuth token expires periodically (`invalid_grant: Token has been expired or revoked`). FIX: user must run `gws auth login` interactively in a terminal to re-authenticate. Script CANNOT refresh token automatically — requires browser flow. When this happens: PDFs/cover letters are still generated, just emails fail. Commit everything, flag the auth issue, re-send emails once user refreshes.
 
 ## New Scanning Ideas to Try
 

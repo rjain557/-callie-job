@@ -48,6 +48,35 @@ job_boards:
       - "client services coordinator"
       - "in-home design consultant"
 
+  # ── Indeed ADMIN ASSISTANT (25mi tight radius) ──
+  # Pure admin roles that leverage Callie's BBA + coordination experience
+  # Tight 25mi radius because admin work requires short commute
+  indeed_admin:
+    enabled: true
+    base_url: "https://www.indeed.com/jobs"
+    params:
+      l: "Rancho Santa Margarita, CA"
+      radius: 25
+      sort: "date"
+      fromage: 1
+    queries:
+      - "administrative assistant"
+      - "executive assistant"
+      - "administrative coordinator"
+
+  # ── LinkedIn ADMIN ASSISTANT (25mi tight radius) ──
+  linkedin_admin:
+    enabled: true
+    base_url: "https://www.linkedin.com/jobs/search"
+    params:
+      location: "Rancho Santa Margarita, California"
+      distance: 25
+      sortBy: "DD"
+      f_TPR: "r86400"
+    queries:
+      - "administrative assistant"
+      - "executive assistant"
+
   # ── Indeed REMOTE (all 50 states) ──
   indeed_remote:
     enabled: true
