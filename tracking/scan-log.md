@@ -18,3 +18,5 @@
 | 2026-04-13 rerun | 19 | 0 | 0 | 0 | 0 | Same 24hr window, same 0 results. MTW followup due 4/14 |
 | 2026-04-14 07:00 | 0 | 0 | 0 | 1 | 1 | Cron: MTW followup + Crossover kit |
 | 2026-04-14 manual | 26 | 2 | 0 | 2 | 0 | South Bay Design Center (4.6) + Natuzzi Americas (4.2). Staples excluded (AutoCAD). Local+Remote scope. |
+| 2026-04-14 admin | 5 | 5 | 0 | 5 | 0 | ADMIN ASSISTANT 25mi: TalentPop, Applied Medical, Berkadia, Experian, PIMCO. All sent. |
+| 2026-04-14 remote | 13 | 0 | 0 | 0 | 0 | Staples excluded (AutoCAD). Crossover 2HL x3 skipped (already applied #21). |

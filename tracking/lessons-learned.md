@@ -79,6 +79,8 @@ Things to ALWAYS warn Callie about in the kit email:
 - 2026-04-13: LinkedIn "home staging" search returns mostly real estate agents — add stronger negative filter or use "home stager" instead
 - 2026-04-14: Indeed often shows only one detail-view per WebFetch — may need to parse the jobs list differently in future
 - 2026-04-14: gws OAuth token expires periodically (`invalid_grant: Token has been expired or revoked`). FIX: user must run `gws auth login` interactively in a terminal to re-authenticate. Script CANNOT refresh token automatically — requires browser flow. When this happens: PDFs/cover letters are still generated, just emails fail. Commit everything, flag the auth issue, re-send emails once user refreshes.
+- 2026-04-14: gws MUST authenticate with `CallieWells17@gmail.com`, NEVER with rjain@technijian.com. Emails to companies need to appear from Callie, not from rjain's work account. Saved to memory: project_gws_account.md
+- 2026-04-14: Crossover / 2 Hour Learning posts the SAME remote role under different city labels (Phoenix/Charlotte/Orlando/Houston/Austin/Atlanta/NY). It's the same job - applying to multiples is spam. Once Callie has applied to one Crossover 2HL role, SKIP all future Crossover 2HL postings until status resolves. Auto-dedupe by company name alone, not title+city.
 
 ## New Scanning Ideas to Try
 
