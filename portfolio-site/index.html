@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Callie Nichole Wells — Interior Design Consultant</title>
+  <meta name="description" content="Interior Design Consultant with $800K+ in design sales. Gold Spirit Award 2025. Residential design, space planning, material selection.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'serif': ['Cormorant Garamond', 'serif'],
+            'sans': ['Inter', 'sans-serif'],
+          },
+          colors: {
+            'warm': {
+              50: '#faf8f5',
+              100: '#f3ede3',
+              200: '#e4d5bf',
+              300: '#c9a87c',
+              400: '#a88149',
+              500: '#8b6b3d',
+            },
+            'ink': '#1a1a1a',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; color: #1a1a1a; }
+    h1, h2, h3, .serif { font-family: 'Cormorant Garamond', serif; font-weight: 500; letter-spacing: -0.01em; }
+    .project-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s ease;
+    }
+    .project-img:hover { transform: scale(1.05); }
+    /* Image fallback: if img has error, hide it so sibling placeholder shows */
+    .project-img.img-error { display: none; }
+    .project-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #a88149;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      padding: 1rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body class="bg-warm-50 text-ink">
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full bg-warm-50/90 backdrop-blur-sm z-50 border-b border-warm-200">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="#" class="serif text-xl">Callie Wells</a>
+      <div class="hidden md:flex space-x-8 text-sm">
+        <a href="#work" class="hover:text-warm-400 transition">Work</a>
+        <a href="#about" class="hover:text-warm-400 transition">About</a>
+        <a href="#services" class="hover:text-warm-400 transition">Services</a>
+        <a href="#contact" class="hover:text-warm-400 transition">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="pt-32 pb-20 px-6">
+    <div class="max-w-5xl mx-auto">
+      <p class="text-warm-400 text-sm tracking-widest uppercase mb-4">Interior Design Consultant</p>
+      <h1 class="text-5xl md:text-7xl leading-tight mb-6">
+        Thoughtful design,<br>
+        <span class="italic text-warm-400">meaningful spaces.</span>
+      </h1>
+      <p class="text-lg max-w-2xl text-gray-700 mb-8 leading-relaxed">
+        Five years of residential interior design experience across three firms.
+        Most recently at Ethan Allen, where I generated over $800,000 in design sales
+        and earned the 2025 Gold Spirit Award for client relationships and revenue performance.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <a href="#work" class="bg-ink text-warm-50 px-8 py-3 hover:bg-warm-400 transition">View Work</a>
+        <a href="#contact" class="border border-ink px-8 py-3 hover:bg-ink hover:text-warm-50 transition">Get in Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Credentials strip -->
+  <section class="py-16 bg-warm-100 border-y border-warm-200">
+    <div class="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div>
+        <p class="serif text-4xl text-warm-400">$800K+</p>
+        <p class="text-xs tracking-wider uppercase text-gray-600 mt-2">in design sales</p>
+      </div>
+      <div>
+        <p class="serif text-4xl text-warm-400">2025</p>
+        <p class="text-xs tracking-wider uppercase text-gray-600 mt-2">Gold Spirit Award</p>
+      </div>
+      <div>
+        <p class="serif text-4xl text-warm-400">5</p>
+        <p class="text-xs tracking-wider uppercase text-gray-600 mt-2">years residential design</p>
+      </div>
+      <div>
+        <p class="serif text-4xl text-warm-400">200+</p>
+        <p class="text-xs tracking-wider uppercase text-gray-600 mt-2">clients served</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work / Portfolio -->
+  <section id="work" class="py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+      <p class="text-warm-400 text-sm tracking-widest uppercase mb-4">Selected Work</p>
+      <h2 class="text-4xl md:text-5xl mb-16">Projects & Consultations</h2>
+
+      <div class="grid md:grid-cols-2 gap-12">
+        <!-- Project 1 -->
+        <div>
+          <div class="aspect-[4/5] bg-warm-200 overflow-hidden mb-6 relative">
+            <div class="project-placeholder absolute inset-0">Add project photo: images/project-1.jpg</div>
+            <img src="images/project-1.jpg" alt="Residential Living Room Refresh"
+                 class="project-img relative z-10"
+                 onerror="this.classList.add('img-error');">
+          </div>
+          <p class="text-warm-400 text-xs tracking-widest uppercase mb-2">Residential</p>
+          <h3 class="text-2xl mb-2">Coastal Living Room Refresh</h3>
+          <p class="text-gray-700">A full redesign emphasizing natural light, neutral palettes, and furniture scaled for an open-concept floor plan. Fabric selections, layout planning, and complete procurement.</p>
+        </div>
+
+        <!-- Project 2 -->
+        <div>
+          <div class="aspect-[4/5] bg-warm-200 overflow-hidden mb-6 relative">
+            <div class="project-placeholder absolute inset-0">Add project photo: images/project-2.jpg</div>
+            <img src="images/project-2.jpg" alt="Dining Room Design"
+                 class="project-img relative z-10"
+                 onerror="this.classList.add('img-error');">
+          </div>
+          <p class="text-warm-400 text-xs tracking-widest uppercase mb-2">Residential</p>
+          <h3 class="text-2xl mb-2">Traditional Dining with Modern Accents</h3>
+          <p class="text-gray-700">Blending heritage furniture with contemporary lighting and textiles for a family that entertains frequently.</p>
+        </div>
+
+        <!-- Project 3 -->
+        <div>
+          <div class="aspect-[4/5] bg-warm-200 overflow-hidden mb-6 relative">
+            <div class="project-placeholder absolute inset-0">Add project photo: images/project-3.jpg</div>
+            <img src="images/project-3.jpg" alt="Primary Bedroom Design"
+                 class="project-img relative z-10"
+                 onerror="this.classList.add('img-error');">
+          </div>
+          <p class="text-warm-400 text-xs tracking-widest uppercase mb-2">Residential</p>
+          <h3 class="text-2xl mb-2">Primary Bedroom Retreat</h3>
+          <p class="text-gray-700">A calming bedroom design built around a custom bedding specification, layered lighting, and custom window treatments.</p>
+        </div>
+
+        <!-- Project 4 -->
+        <div>
+          <div class="aspect-[4/5] bg-warm-200 overflow-hidden mb-6 relative">
+            <div class="project-placeholder absolute inset-0">Add project photo: images/project-4.jpg</div>
+            <img src="images/project-4.jpg" alt="Full Home Project"
+                 class="project-img relative z-10"
+                 onerror="this.classList.add('img-error');">
+          </div>
+          <p class="text-warm-400 text-xs tracking-widest uppercase mb-2">Residential</p>
+          <h3 class="text-2xl mb-2">Full Home Refresh — 5 Rooms</h3>
+          <p class="text-gray-700">Complete coordination across living, dining, kitchen, family, and primary bedroom for a repeat client.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="py-24 px-6 bg-warm-100">
+    <div class="max-w-4xl mx-auto">
+      <p class="text-warm-400 text-sm tracking-widest uppercase mb-4">About</p>
+      <h2 class="text-4xl md:text-5xl mb-10">A designer built on listening.</h2>
+
+      <div class="space-y-6 text-lg leading-relaxed text-gray-700">
+        <p>
+          I spent three years as a Design Consultant at Ethan Allen where I had the
+          privilege of working with over 200 clients on everything from single-room
+          refreshes to full-home transformations. The common thread in every project
+          was the same: the design only works when it fits how the client actually lives.
+        </p>
+        <p>
+          Before Ethan Allen, I supported a principal designer at Goff Designs on
+          boutique residential projects and coordinated client operations at
+          Vintage Design Inc. That combination of firsthand design execution, detailed
+          project coordination, and high-touch client engagement is what I bring to
+          every consultation.
+        </p>
+        <p>
+          I hold a Bachelor of Business Administration from Arizona State University
+          and I'm based in Rancho Santa Margarita, serving clients throughout
+          Orange County and beyond.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services" class="py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+      <p class="text-warm-400 text-sm tracking-widest uppercase mb-4">Services</p>
+      <h2 class="text-4xl md:text-5xl mb-16">What I Do</h2>
+
+      <div class="grid md:grid-cols-3 gap-10">
+        <div>
+          <div class="w-10 h-10 bg-warm-400 mb-4"></div>
+          <h3 class="text-xl mb-3 serif font-semibold">In-Home Consultations</h3>
+          <p class="text-gray-700 leading-relaxed">Design consultations in your space, understanding how you live and what's not working today.</p>
+        </div>
+        <div>
+          <div class="w-10 h-10 bg-warm-400 mb-4"></div>
+          <h3 class="text-xl mb-3 serif font-semibold">Space Planning & Furniture</h3>
+          <p class="text-gray-700 leading-relaxed">Scaled drawings, furniture layout, and selection focused on function, flow, and feel.</p>
+        </div>
+        <div>
+          <div class="w-10 h-10 bg-warm-400 mb-4"></div>
+          <h3 class="text-xl mb-3 serif font-semibold">Fabric & Finish Curation</h3>
+          <p class="text-gray-700 leading-relaxed">Material, textile, and finish selections coordinated across every element of the space.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="py-24 px-6 bg-ink text-warm-50">
+    <div class="max-w-3xl mx-auto text-center">
+      <p class="text-warm-300 text-sm tracking-widest uppercase mb-4">Let's work together</p>
+      <h2 class="serif text-4xl md:text-5xl mb-8">Get in touch.</h2>
+      <p class="text-lg mb-10 text-warm-100">
+        Whether you're a hiring manager, a potential client, or an industry colleague,
+        I'd love to hear from you.
+      </p>
+      <div class="space-y-4 text-lg">
+        <p><a href="mailto:CallieWells17@gmail.com" class="hover:text-warm-300 transition">CallieWells17@gmail.com</a></p>
+        <p><a href="tel:9495579014" class="hover:text-warm-300 transition">949-557-9014</a></p>
+        <p><a href="https://www.linkedin.com/in/callie-wells17" class="hover:text-warm-300 transition">linkedin.com/in/callie-wells17</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-8 px-6 bg-ink text-warm-300 border-t border-warm-500/20">
+    <div class="max-w-6xl mx-auto text-center text-sm">
+      <p>© 2026 Callie Nichole Wells. Based in Rancho Santa Margarita, CA.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

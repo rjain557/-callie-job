@@ -1,0 +1,80 @@
+Hi Callie,
+
+Big update. I've been rethinking the pipeline because we've sent 29 applications and gotten mostly silence. Volume isn't the answer. Quality outreach is.
+
+I just built out a complete PROACTIVE job search toolkit for you. Everything is in the GitHub repo under the new /outreach/, /interview-prep/, and /portfolio-site/ folders.
+
+HERE'S WHAT'S NEW AND WHY IT MATTERS:
+
+1. DIRECT-OUTREACH EMAIL TEMPLATES (outreach/email-templates/)
+   - Template 1: Direct hiring manager email (bypass ATS)
+   - Template 2: Past-client referral ask
+   - Template 3: Alumni/former-colleague reconnect
+   Why: 30-50% response rates for warm outreach vs ~2% for ATS applications
+
+2. TARGET HIRING MANAGER LIST (outreach/target-hiring-managers.md)
+   15 OC design companies ranked by fit, with research on who to contact
+   Tier 1: RH, Waterworks, Arhaus, Mitchell Gold, Natuzzi, Visual Comfort, Ferguson
+   Tier 2: Boutique firms
+   Tier 3: Laguna Design Center trade showrooms (walk-in strategy)
+
+3. RECRUITER LIST (outreach/recruiters.md)
+   Design-industry specialists like JBK Associates, Jennifer Berman, RitaSue Siegel
+   Plus admin recruiters (Robert Half, LHH)
+   Ready-to-send pitch template
+
+4. COMPANY DEEP-DIVE INTEL (outreach/company-intel/)
+   Detailed research on RH, Waterworks, Arhaus, Natuzzi, Mitchell Gold
+   Each file has: culture, comp ranges, interview process, conversation hooks, red flags
+
+5. INTERVIEW PREP TOOLKIT (interview-prep/)
+   - 8 STAR stories from your actual experience (lead with $800K)
+   - 30+ common questions with framework answers
+   - Your questions to ask them
+
+6. PORTFOLIO WEBSITE (portfolio-site/)
+   Ready-to-deploy single-file site at calliewells.netlify.app
+   Drop in 4 project photos, push to Netlify, put URL on resume/LinkedIn
+
+7. LINKEDIN AUDIT CHECKLIST (outreach/linkedin-audit.md)
+   20-point checklist - 2.5 hours of work = 3-5x more profile views
+
+YOUR 30-DAY PLAN (from outreach/target-hiring-managers.md):
+
+WEEK 1 (this week):
+- Do the LinkedIn audit (#7) - 2.5 hours
+- Pick 4 project photos for portfolio site, deploy it to Netlify
+- Send first 3 past-client referral emails (Template 2)
+
+WEEK 2:
+- Send 5 direct hiring manager emails to Tier 1 companies (Template 1)
+- Reach out to 3 recruiters (use the pitch in recruiters.md)
+
+WEEK 3:
+- Send 3 alumni reconnect emails (Template 3)
+- Visit Laguna Design Center in person on a Tuesday/Thursday morning
+
+WEEK 4:
+- Follow up on unanswered outreach
+- Interview prep for any screening calls
+
+WHAT I NEED FROM YOU (to unblock the next round):
+
+1. STATUS CHECK - Of the 13 Indeed kits I sent you (Tailored Closet through Mode Renovation), which did you actually submit? Any responses? This is CRITICAL - without this the pipeline can't actually learn what's working.
+
+2. PAST CLIENT LIST - Can you send me names of 5-10 Ethan Allen clients you had 3+ interactions with and a positive relationship? I'll help draft personalized Template 2 emails for each.
+
+3. LINKEDIN NETWORK - How many connections do you have? Any former Ethan Allen colleagues on LinkedIn who have since moved to another firm?
+
+The big shift: instead of applying to 30 jobs through Indeed, we pick 5 target companies this week and approach each one THREE WAYS:
+- Direct hiring manager email (Template 1)
+- Recruiter introduction (through JBK or similar)
+- Past-client referral (if any client knows someone there)
+
+One applicant approaching 5 companies 3 ways each = 15 high-quality touchpoints.
+
+Takes 2 hours of your time per week. Way higher conversion than spraying Indeed.
+
+Ready to shift to this approach?
+
+- Your Job Search Pipeline
