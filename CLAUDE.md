@@ -92,6 +92,18 @@ Berkadia's "Sr Admin Assistant" wanted 5 yrs pure ADMIN. Callie's 5 yrs is mostl
 - Medical/dental/nursing
 - Under $40K annual (unless part-time with growth path)
 
+## SerpAPI - Primary Job Search Source
+
+**Use SerpAPI Google Jobs FIRST for scanning.** WebFetch is fallback only.
+
+- Key location: `C:\Users\rjain\OneDrive - Technijian, Inc\Documents\VSCODE\keys\serpapi.md` (NEVER in repo)
+- Runner: `scripts/serpapi_scan.py` (single query), `scripts/serpapi_batch.py` (all queries)
+- Triage: `scripts/serpapi_triage.py` (applies YoE + hard exclusions)
+- Cache: `tracking/serpapi-cache/` (raw responses + triage outputs)
+- Free tier: 100 searches/month — budget ~3/day for full 3-scope run
+
+**Location format matters:** Use "Rancho Santa Margarita, California" (not "CA") — full state name.
+
 ## Self-Improving Loop (MANDATORY)
 
 **READ at start of every pipeline run:** `tracking/lessons-learned.md`

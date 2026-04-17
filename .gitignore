@@ -17,3 +17,4 @@ Thumbs.db
 # Node
 node_modules/
 __pycache__/
+tracking/serpapi-cache/

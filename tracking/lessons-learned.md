@@ -84,6 +84,8 @@ Things to ALWAYS warn Callie about in the kit email:
 - 2026-04-14: MISS: Applied Berkadia Sr Admin Assistant (4.5) but it's a BAD FIT. "Senior" titles in admin domain require 5+ yrs pure admin experience. Callie has only ~2 yrs pure admin (Vintage Design Coordinator front desk). She has 5 yrs DESIGN experience, not 5 yrs admin. Must not conflate "5 yrs design-adjacent" with "5 yrs admin". See profile.yml experience section.
 - 2026-04-14: NEW FIT RULE: Before scoring, check YoE required vs Callie's YoE in that SPECIFIC domain (design vs admin vs mgmt). If gap > 4 yrs, SKIP. If gap 3-4 yrs, flag as "stretch" in Callie email. Domain-specific YoE: interior_design=5, design_sales=3, admin_coordination=2, people_management=0.
 - 2026-04-14: Auto-flag these as poor fit: "Senior Administrative Assistant", "Sr. Executive Assistant", "Director of Design", "VP Design", "Chief Design Officer". Titles with "Senior"/"Sr"/"Lead" require domain-specific 5+ yrs.
+- 2026-04-17: SerpAPI (Google Jobs API) integrated as primary scanner. Returns structured JSON, no anti-bot blocking like Indeed/LinkedIn WebFetch. Key at C:\Users\rjain\OneDrive...\keys\serpapi.md (NEVER in repo). 100 searches/month free tier, budget 3/day. IMPORTANT: location must be "Rancho Santa Margarita, California" not "CA" or API returns 400.
+- 2026-04-17: SerpAPI 7-day baseline surfaced 92 jobs, 5 high-value that 9 days of WebFetch missed: Eisenbart & Sons ($120-200K, 5mi!), Pacific Life ($93-114K EA), Boutique Recruiting ($80-100K EA, 10mi), RH Interior Design Assistant Newport Beach, Crate and Barrel Design Consultant Costa Mesa. SerpAPI finds jobs WebFetch can't scrape.
 
 ## New Scanning Ideas to Try
 

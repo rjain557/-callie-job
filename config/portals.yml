@@ -1,5 +1,15 @@
 # Portal Scanner Configuration for Callie Wells
 # Scanned daily by career-ops pipeline
+#
+# PRIMARY: scripts/serpapi_scan.py (Google Jobs API via SerpAPI)
+#   - Key: C:\Users\rjain\OneDrive - Technijian, Inc\Documents\VSCODE\keys\serpapi.md
+#   - Reliable structured results (no blocking like WebFetch)
+#   - 100 searches/month free tier - use strategically
+#   - Batch via: python scripts/serpapi_batch.py --days N
+#
+# FALLBACK: WebFetch for specific URLs when SerpAPI budget exhausted
+#
+# NEVER store the API key in the repo. OneDrive path only.
 
 # ═══════════════════════════════════════════════════════════
 #  JOB BOARDS — General (high volume)
