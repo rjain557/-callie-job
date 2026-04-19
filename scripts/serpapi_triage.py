@@ -22,6 +22,21 @@ HARD_EXCLUDE = [
     'commercial truck', 'insurance agent',
 ]
 
+# Mass-market retailers - SKIP even if role title says "Design Consultant"
+# (per 2026-04-17 lesson: Crate and Barrel "In-Store Design Consultant" miss)
+# These are retail regardless of title. Distinguish from luxury showrooms (RH, Waterworks,
+# Natuzzi, Visual Comfort, Ethan Allen, Mitchell Gold, Arhaus) which ARE ok.
+RETAIL_BRAND_COMPANIES = [
+    'crate and barrel', 'crate & barrel', 'crateandbarrel',
+    'williams-sonoma', 'williams sonoma',
+    'pottery barn', 'west elm', 'pbteen',
+    'home depot', 'lowes', 'lowe\'s',
+    'ashley furniture', 'ashley homestore',
+    'living spaces', 'bob\'s discount', 'bobs discount',
+    'rooms to go', 'raymour & flanigan', 'value city',
+    'macy\'s furniture', 'jcpenney', 'target',
+]
+
 SENIOR_ADMIN_SKIP_TITLES = [
     'sr. admin', 'senior administrative', 'lead administrative',
     'sr. executive', 'senior executive', 'lead executive',
@@ -31,13 +46,19 @@ SENIOR_ADMIN_SKIP_TITLES = [
 
 def excluded(job, already_applied):
     title_lower = job.get('title', '').lower()
-    text = (title_lower + ' ' + job.get('company', '').lower() + ' ' +
+    company_lower = job.get('company', '').lower()
+    text = (title_lower + ' ' + company_lower + ' ' +
             job.get('description', '').lower())
 
     # Hard exclusions
     for kw in HARD_EXCLUDE:
         if kw in text:
             return f'HARD:{kw}'
+
+    # Mass-market retail brands - skip even if title says "Design Consultant"
+    for retailer in RETAIL_BRAND_COMPANIES:
+        if retailer in company_lower:
+            return f'RETAIL-BRAND:{retailer}'
 
     # Senior admin YoE mismatch
     for kw in SENIOR_ADMIN_SKIP_TITLES:
@@ -57,8 +78,19 @@ def excluded(job, already_applied):
 
 
 def main():
-    batch_file = BASE / "tracking" / "serpapi-cache" / "batch-2026-04-17-7d.json"
-    out_file = BASE / "tracking" / "serpapi-cache" / "triage-2026-04-17.md"
+    # Allow CLI arg for batch file, default to most recent
+    if len(sys.argv) > 1 and sys.argv[1].endswith(".json"):
+        batch_file = Path(sys.argv[1])
+    else:
+        cache = BASE / "tracking" / "serpapi-cache"
+        batches = sorted(cache.glob("batch-*.json"))
+        if not batches:
+            print("No batch files found")
+            sys.exit(1)
+        batch_file = batches[-1]
+
+    date_tag = batch_file.stem.replace("batch-", "")
+    out_file = BASE / "tracking" / "serpapi-cache" / f"triage-{date_tag}.md"
 
     with open(batch_file, encoding="utf-8") as f:
         data = json.load(f)
@@ -114,7 +146,7 @@ def main():
         f.write("".join(lines))
 
     # Write just the "consider" items as JSON for downstream processing
-    consider_file = BASE / "tracking" / "serpapi-cache" / "triage-2026-04-17-consider.json"
+    consider_file = BASE / "tracking" / "serpapi-cache" / f"triage-{date_tag}-consider.json"
     with open(consider_file, "w", encoding="utf-8") as f:
         json.dump(consider, f, indent=2)
 
