@@ -3,6 +3,13 @@
     "googleworkspace": {
       "command": "gws",
       "args": ["mcp", "-s", "gmail"]
+    },
+    "autocad": {
+      "command": "c:\\VSCode\\callie-job\\-callie-job\\.venv\\Scripts\\python.exe",
+      "args": ["c:\\VSCode\\callie-job\\-callie-job\\autocad-mcp\\server.py"],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
     }
   }
 }

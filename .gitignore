@@ -18,3 +18,7 @@ Thumbs.db
 node_modules/
 __pycache__/
 tracking/serpapi-cache/
+
+# Python venv (autocad-mcp)
+.venv/
+*.pyc
