@@ -8,6 +8,66 @@
 
 ---
 
+## About this document
+
+This is the **single source of truth** for TechniCadBridge. It is the
+README, the architecture doc, the developer guide, the runbook, the
+protocol reference, and the changelog rolled into one file. If
+something contradicts this doc, this doc wins until amended.
+
+**Audience:** anyone implementing, reviewing, or debugging the plugin.
+Not aimed at end users — end users only see the Python client side.
+
+**How to read it:**
+
+- **First time?** Read § 0 (TL;DR), § 2 (Goals), § 3 (Architecture).
+  That's enough to understand what we're building.
+- **Going to start coding?** Add § 11 (Project layout), § 12
+  (Lifecycle), § 13 (Code examples), § 14 (Build), § 17 (Phased
+  tickets), § 21 (Developer guide).
+- **Going to integrate from Python?** Add § 4 (Wire protocol), § 5
+  (Method catalog), § 6 (Error model), § 22 (Protocol reference
+  examples).
+- **Triaging a production bug?** § 16 (Observability & runbook), § 8
+  (Logging & telemetry), § 19 (Risks).
+
+**Maintenance rules:**
+
+- All changes are versioned via § 10 (semver). Bump the schema version
+  in § 7 if you change config shape.
+- Append a Changelog entry in Appendix D for every released change. No
+  silent edits.
+- Method-catalog changes (§ 5) require updating Appendix B (Python
+  facade mapping) and a new entry in Appendix D.
+- The auto-generated `docs/PROTOCOL.md` (Phase 4 deliverable) is
+  derived from XML doc comments on `[RpcMethod]` attributes; do not
+  hand-edit it. Until that exists, § 22 of this doc is canonical.
+
+**Quick start (developer machine, after Phase 1.10 lands):**
+
+```powershell
+# 1. Clone and build
+git clone https://github.com/rjain557/technijian-cad-bridge
+cd technijian-cad-bridge
+.\scripts\build.ps1
+
+# 2. Install
+.\packaging\install.ps1
+
+# 3. Restart AutoCAD; confirm
+Test-NetConnection 127.0.0.1 -Port 7878
+# TcpTestSucceeded : True
+
+# 4. From the -callie-job repo, the existing scripts now use the plugin
+cd ..\-callie-job
+$env:USE_PLUGIN = '1'
+.\.venv\Scripts\python.exe autocad-mcp\build_kitchen.py
+```
+
+If anything in steps 1–4 fails, see § 16 (Observability & runbook).
+
+---
+
 ## Quick index
 
 | § | Topic |
@@ -32,9 +92,12 @@
 | 18 | Acceptance tests |
 | 19 | Risks & mitigations |
 | 20 | Effort, cost, schedule |
+| 21 | Developer guide (deep-dive: dev env, debugging, adding handlers, code style) |
+| 22 | Protocol reference — full request/response examples per handler |
 | Appendix A | JSON Schema for all method params/returns |
 | Appendix B | Mapping from existing `acad.py` methods to plugin methods |
 | Appendix C | AutoCAD .NET API references used |
+| Appendix D | Changelog |
 
 ---
 
@@ -1562,6 +1625,870 @@ spike inform Phase 3 scope.
 
 ---
 
+## 21. Developer guide
+
+This section is the contents of what would otherwise live in
+`docs/DEVELOPER.md`. Written for someone who just cloned the repo and
+wants to make their first change.
+
+### 21.1 Dev environment setup
+
+Required:
+
+- **Windows 10/11 x64**
+- **AutoCAD 2026 or 2027** installed (trial is fine for development).
+  ObjectARX-managed assemblies live in the AutoCAD install dir.
+- **.NET 8 SDK** — `winget install Microsoft.DotNet.SDK.8`
+- **Git for Windows** — `winget install Git.Git`
+- **Visual Studio 2022 Community** (free) — `winget install
+  Microsoft.VisualStudio.2022.Community` with workloads:
+  - `.NET desktop development`
+  - `Debugging Tools for Windows`
+- (optional) **Rider** — works fine, has better F#/Linux story but for
+  this project VS is the path of least resistance.
+
+Recommended:
+
+- **PowerShell 7+** (`winget install Microsoft.PowerShell`)
+- **Windows Terminal** (`winget install Microsoft.WindowsTerminal`)
+- **NCat / netcat for Windows** for poking the JSON-RPC port from a
+  shell — `winget install nmap` or build from source
+
+### 21.2 First clone & build
+
+```powershell
+git clone https://github.com/rjain557/technijian-cad-bridge
+cd technijian-cad-bridge
+
+# Tell the build where AutoCAD lives (only needed if non-default path)
+$env:AcadInstallDir = 'C:\Program Files\Autodesk\AutoCAD 2027'
+
+# Build
+.\scripts\build.ps1
+
+# Run unit tests
+.\scripts\test.ps1
+```
+
+Expected: `dotnet build -c Release` finishes clean; tests run; DLL
+appears at `src\TechniCadBridge\bin\Release\net8.0-windows\TechniCadBridge.dll`.
+
+### 21.3 Debugging the plugin from Visual Studio
+
+1. Open `TechniCadBridge.sln` in VS 2022.
+2. Set `TechniCadBridge` as the startup project.
+3. Project → Properties → Debug → Open debug launch profiles UI.
+4. Add a "Project" launcher with:
+   - Executable: `C:\Program Files\Autodesk\AutoCAD 2027\acad.exe`
+   - Command-line args: `/nologo`
+   - Working directory: `$(ProjectDir)`
+5. Hit F5. AutoCAD launches under the VS debugger; breakpoints in your
+   handlers fire when JSON-RPC requests hit them.
+6. From a separate shell, `nc 127.0.0.1 7878` and paste a JSON-RPC
+   request to trigger your code.
+
+**Important debugger gotcha:** AutoCAD has its own JIT and AppDomain
+quirks. If breakpoints don't bind ("symbols not loaded"), enable
+"Just My Code" off in Tools → Options → Debugging → General.
+
+### 21.4 The most common dev task: adding a new handler method
+
+Suppose you want to add `Geometry.AddTorus`.
+
+**Step 1.** Add the method to `Handlers/GeometryHandler.cs`:
+
+```csharp
+[RpcMethod("Geometry.AddTorus")]
+public CreateResult AddTorus(double[] center, double majorRadius,
+                             double minorRadius, string? layer = null)
+{
+    var doc = ActiveDocOrThrow();
+    using var docLock = doc.LockDocument();
+    using var tr = doc.Database.TransactionManager.StartTransaction();
+    var ms = (BlockTableRecord)tr.GetObject(
+        ((BlockTable)tr.GetObject(doc.Database.BlockTableId, OpenMode.ForRead))
+            [BlockTableRecord.ModelSpace], OpenMode.ForWrite);
+
+    var torus = new Solid3d();
+    torus.CreateTorus(majorRadius, minorRadius);
+    torus.TransformBy(Matrix3d.Displacement(
+        new Point3d(center[0], center[1], center[2]) - Point3d.Origin));
+    if (layer is not null) torus.Layer = layer;
+
+    ms.AppendEntity(torus);
+    tr.AddNewlyCreatedDBObject(torus, true);
+    tr.Commit();
+
+    return new CreateResult
+    {
+        Handle = torus.Handle.ToString(),
+        ObjectName = torus.GetType().Name,
+        Layer = torus.Layer
+    };
+}
+```
+
+**Step 2.** Add a unit test in `tests/TechniCadBridge.Tests/Handlers/GeometryHandlerTests.cs`:
+
+```csharp
+[Fact]
+public void AddTorus_ValidParams_ReturnsHandle()
+{
+    var docSvc = new FakeDocumentService();
+    var sut = new GeometryHandler(docSvc);
+    var result = sut.AddTorus(new[] { 0.0, 0.0, 0.0 }, 5.0, 1.0, "I-FURN");
+    Assert.NotNull(result.Handle);
+    Assert.Equal("I-FURN", result.Layer);
+}
+```
+
+**Step 3.** Update the spec:
+- Add row in § 5.3.1 (Primitives table)
+- Add a Changelog entry in Appendix D under "Unreleased"
+
+**Step 4.** Update the Python facade in `acad.py` (in the `-callie-job`
+repo) if the method should be exposed there.
+
+**Step 5.** Run `scripts/gen-protocol-md.ps1` (Phase 4) to refresh the
+auto-generated protocol doc.
+
+### 21.5 Code style
+
+| Rule | Notes |
+|---|---|
+| C# 12, .NET 8 nullable references | `<Nullable>enable</Nullable>` in csproj |
+| Brace style | Allman (newline before `{`); the editor config enforces |
+| Naming | `PascalCase` for types/members, `_camelCase` for private fields, `camelCase` for params/locals |
+| Async | All long-running ops are `async Task<T>`; `await` everywhere; never `.Result` |
+| LINQ | Allowed in handlers but never inside transactions where it might defer enumeration past `tr.Commit()` |
+| Logging | `Logger.Info/Warn/Error/Debug`; never `Console.WriteLine` outside of dev spikes |
+| Magic numbers | Hoist to `const` with a comment when reused; one-off thresholds inline are fine |
+| Comments | Explain *why* not *what*; XML doc comments on every `[RpcMethod]` (used by the protocol-doc generator) |
+| `using` declarations | Prefer `using var` (C# 8 simple disposal) for `Transaction`, `DocumentLock` |
+
+### 21.6 Transactions & document locks — the rules that prevent crashes
+
+AutoCAD's database mutation API is finicky. The plugin enforces:
+
+1. **Every handler that touches the database opens a `Transaction`.**
+   Even a read. Outside a transaction, `tr.GetObject` throws
+   `eLockViolation`.
+2. **Every handler that writes to the database opens a
+   `DocumentLock` first.** Required when running on the main thread
+   from a non-AutoCAD-command path (which the plugin is).
+3. **Never cache `Document`, `Database`, or `ObjectId` across
+   handler calls.** Re-resolve on every entry. The user might have
+   closed and reopened a drawing between calls.
+4. **`Transaction.Commit()` before any non-AutoCAD work** (file IO,
+   JSON serialization). Don't do `tr.Commit()` after writing a PNG.
+5. **Use `using var tr = ...` not `try/finally tr.Dispose()`** —
+   safer, especially when nested.
+6. **If a handler throws, the transaction auto-aborts** when the
+   `using` scope exits. Don't manually `tr.Abort()` unless you have a
+   compensating action.
+
+### 21.7 Adding a new handler class (groups of methods)
+
+1. Create `Handlers/MyNewHandler.cs` with `[RpcMethod]` attributes.
+2. The `HandlerRegistry` discovers handlers via reflection at startup —
+   no manual registration needed.
+3. Add a row to the table in § 5 of this spec.
+4. Add unit tests in `tests/TechniCadBridge.Tests/Handlers/`.
+5. If the handler depends on a new AutoCAD assembly (e.g.
+   `acpltsvc.dll` for plotting), add a `<Reference>` entry to the
+   csproj.
+
+### 21.8 Branch & PR flow (until v1.1, when the repo goes public)
+
+| Step | Convention |
+|---|---|
+| Branch from | `main` (always) |
+| Branch name | `phase-<N>/<short-slug>` (e.g. `phase-2/material-library`) |
+| Commit messages | Imperative, lower-case, first line ≤ 72 chars; body explains *why* |
+| PR title | Same as feature commit message |
+| PR body | "Closes #N" + bullet list of changes + screenshots/test output |
+| Reviewer | rjain |
+| Merge | Squash merge; commit message = PR title |
+| CHANGELOG | Update Appendix D before merge |
+
+Until the repo opens, "PR" is informal — branches against `main` for
+diffability, but no GitHub PR review process. After v1.1 open-source
+review, switch to GitHub PR with required `ci` + 1 reviewer.
+
+### 21.9 Release process
+
+1. Merge all phase tickets to `main`
+2. Bump version in `src/TechniCadBridge/AssemblyInfo.cs` and
+   `Directory.Build.props`
+3. Add a Changelog entry in Appendix D ("`## [1.0.0] — 2026-MM-DD`")
+4. Tag: `git tag v1.0.0; git push --tags`
+5. Build release: `.\scripts\publish.ps1` outputs DLL + zipped install
+   bundle
+6. (Optional) GitHub release with attached zip
+
+### 21.10 Common pitfalls (and how to fix them)
+
+| Pitfall | Fix |
+|---|---|
+| Unit test passes, integration test fails with `eLockViolation` | Forgot `using var docLock = doc.LockDocument();` in the handler |
+| Plugin DLL won't NETLOAD: "could not load file or assembly" | Check that all `Reference Include="ac*"` entries in csproj have `<Private>false</Private>` |
+| Plugin loads but client gets connection refused | Check `Application.Idle` is firing; if AutoCAD is showing a startup splash or modal, Idle doesn't fire |
+| `Newtonsoft.Json` version conflict between plugin and AutoCAD's bundled copy | Use `<PrivateAssets>all</PrivateAssets>` on the PackageReference and add an `AssemblyResolve` handler in `PluginEntry` |
+| Render returns black PNG | Default lighting probably ON — set `Light.SetSun {enabled: true}` and `Render.SetDefaults {defaultLighting: false}` |
+| `Geometry.Loft` succeeds but result has weird normals | Section curves were drawn in inconsistent orientations; reverse one of them with `Polyline.ReverseCurve()` before lofting |
+
+---
+
+## 22. Protocol reference — full examples per handler
+
+This is the contents of what would otherwise live in
+`docs/PROTOCOL.md`. § 5 is the catalog (params + return shape); this §
+22 is the **examples** — one canonical request/response pair per
+handler so a reader can copy-paste and modify.
+
+Once Phase 4 implements `scripts/gen-protocol-md.ps1`, that script
+produces a more exhaustive auto-generated reference. Until then, these
+examples are canonical.
+
+### 22.1 Document handler
+
+**`Document.Status`**
+
+Request:
+
+```json
+{ "jsonrpc": "2.0", "id": 1, "method": "Document.Status" }
+```
+
+Response:
+
+```json
+{
+  "jsonrpc": "2.0", "id": 1,
+  "result": {
+    "name": "kitchen.dwg",
+    "path": "C:\\VSCode\\callie-job\\-callie-job\\projects\\04-kitchen\\out\\kitchen.dwg",
+    "saved": true,
+    "layerCount": 22,
+    "entityCount": 141,
+    "activeLayer": "0",
+    "activeView": "NEISO"
+  }
+}
+```
+
+**`Document.New`**
+
+```json
+{ "jsonrpc": "2.0", "id": 2, "method": "Document.New",
+  "params": { "template": "C:\\Program Files\\Autodesk\\AutoCAD 2027\\Template\\acad.dwt" } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 2,
+  "result": { "name": "Drawing2.dwg", "path": "" } }
+```
+
+**`Document.Save`**
+
+```json
+{ "jsonrpc": "2.0", "id": 3, "method": "Document.Save",
+  "params": { "path": "C:\\Users\\rjain\\Desktop\\test.dwg" } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 3,
+  "result": { "name": "test.dwg",
+              "path": "C:\\Users\\rjain\\Desktop\\test.dwg",
+              "saved": true } }
+```
+
+### 22.2 Layer handler
+
+**`Layer.List`**
+
+```json
+{ "jsonrpc": "2.0", "id": 10, "method": "Layer.List" }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 10,
+  "result": [
+    { "name": "0", "color": 7, "frozen": false, "locked": false,
+      "on": true, "material": null, "lineweight": -3 },
+    { "name": "A-WALL", "color": 254, "frozen": false, "locked": false,
+      "on": true, "material": "Paint-Interior-White", "lineweight": -3 },
+    { "name": "I-CASE", "color": 33, "frozen": false, "locked": false,
+      "on": true, "material": "Cabinet-Paint", "lineweight": -3 }
+  ] }
+```
+
+**`Layer.Create`**
+
+```json
+{ "jsonrpc": "2.0", "id": 11, "method": "Layer.Create",
+  "params": { "name": "I-DETAIL", "color": 33 } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 11,
+  "result": { "name": "I-DETAIL", "created": true } }
+```
+
+**`Layer.Freeze` (error case — freezing the active layer)**
+
+```json
+{ "jsonrpc": "2.0", "id": 12, "method": "Layer.Freeze",
+  "params": { "name": "I-CASE", "freeze": true } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 12,
+  "error": {
+    "code": -32011,
+    "message": "Cannot freeze the active layer 'I-CASE'",
+    "data": {
+      "symbol": "LayerStateInvalid",
+      "reason": "cannot freeze active layer",
+      "layer": "I-CASE",
+      "method": "Layer.Freeze",
+      "rpcId": 12
+    }
+  } }
+```
+
+### 22.3 Geometry handler
+
+**`Geometry.AddBox`**
+
+```json
+{ "jsonrpc": "2.0", "id": 20, "method": "Geometry.AddBox",
+  "params": {
+    "corner1": [0, 0, 0],
+    "corner2": [10, 5, 8],
+    "layer": "I-CASE"
+  } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 20,
+  "result": {
+    "handle": "2BC",
+    "objectName": "AcDb3dSolid",
+    "layer": "I-CASE",
+    "boundingBox": { "min": [0,0,0], "max": [10,5,8] },
+    "center": [5, 2.5, 4],
+    "size": [10, 5, 8]
+  } }
+```
+
+**`Geometry.Loft` (replaces the LISP fragments from session 04-25)**
+
+```json
+{ "jsonrpc": "2.0", "id": 21, "method": "Geometry.Loft",
+  "params": {
+    "sectionHandles": ["3A", "3B", "3C"],
+    "options": { "guideMode": "crossSectionsOnly" }
+  } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 21,
+  "result": { "handle": "3D", "objectName": "AcDb3dSolid",
+              "layer": "I-FURN" } }
+```
+
+**`Geometry.Boolean`**
+
+```json
+{ "jsonrpc": "2.0", "id": 22, "method": "Geometry.Boolean",
+  "params": {
+    "op": "subtract",
+    "sourceHandles": ["2BC"],
+    "otherHandles": ["2BD", "2BE"]
+  } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 22,
+  "result": { "handle": "2BC", "op": "subtract",
+              "remaining": "AcDb3dSolid" } }
+```
+
+### 22.4 Entity handler
+
+**`Entity.List` (filtered)**
+
+```json
+{ "jsonrpc": "2.0", "id": 30, "method": "Entity.List",
+  "params": { "layer": "I-CASE", "type": "AcDb3dSolid", "limit": 50 } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 30,
+  "result": [
+    { "handle": "2BC", "type": "AcDb3dSolid", "layer": "I-CASE" },
+    { "handle": "2BD", "type": "AcDb3dSolid", "layer": "I-CASE" }
+  ] }
+```
+
+**`Entity.SetMaterial`**
+
+```json
+{ "jsonrpc": "2.0", "id": 31, "method": "Entity.SetMaterial",
+  "params": { "handle": "2BC", "material": "Wood-Walnut" } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 31, "result": {} }
+```
+
+### 22.5 View & VisualStyle handlers
+
+**`View.SetCustom`**
+
+```json
+{ "jsonrpc": "2.0", "id": 40, "method": "View.SetCustom",
+  "params": {
+    "location": [240, 60, 80],
+    "target": [60, 60, 36],
+    "lens": 35
+  } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 40, "result": {} }
+```
+
+**`View.SaveCamera` then `View.RestoreCamera`**
+
+```json
+{ "jsonrpc": "2.0", "id": 41, "method": "View.SaveCamera",
+  "params": { "name": "HERO", "location": [240, 60, 80],
+              "target": [60, 60, 36], "lens": 35 } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 41, "result": { "name": "HERO" } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 42, "method": "View.RestoreCamera",
+  "params": { "name": "HERO" } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 42,
+  "result": { "name": "HERO", "location": [240, 60, 80],
+              "target": [60, 60, 36], "lens": 35 } }
+```
+
+**`VisualStyle.Set`**
+
+```json
+{ "jsonrpc": "2.0", "id": 43, "method": "VisualStyle.Set",
+  "params": { "style": "Realistic" } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 43,
+  "result": { "visualStyle": "Realistic" } }
+```
+
+### 22.6 Material handler (the headline capability)
+
+**`Material.ListLibrary` (filtered)**
+
+```json
+{ "jsonrpc": "2.0", "id": 50, "method": "Material.ListLibrary",
+  "params": { "family": "Wood", "search": "oak" } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 50,
+  "result": [
+    { "name": "Wood-WhiteOak-Natural", "family": "Wood",
+      "displayName": "White Oak — Natural" },
+    { "name": "Wood-WhiteOak-Stained", "family": "Wood",
+      "displayName": "White Oak — Stained" },
+    { "name": "Wood-RedOak-Natural",  "family": "Wood",
+      "displayName": "Red Oak — Natural" }
+  ] }
+```
+
+**`Material.ImportFromLibrary`**
+
+```json
+{ "jsonrpc": "2.0", "id": 51, "method": "Material.ImportFromLibrary",
+  "params": { "name": "Wood-WhiteOak-Natural", "asLayerMaterial": false } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 51,
+  "result": { "material": "Wood-WhiteOak-Natural", "imported": true } }
+```
+
+**`Material.AssignToLayer`**
+
+```json
+{ "jsonrpc": "2.0", "id": 52, "method": "Material.AssignToLayer",
+  "params": { "layer": "A-FLOR", "material": "Wood-WhiteOak-Natural" } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 52, "result": {} }
+```
+
+**`Material.Create` (custom PBR)**
+
+```json
+{ "jsonrpc": "2.0", "id": 53, "method": "Material.Create",
+  "params": {
+    "name": "Custom-Coastal-Blue",
+    "color": [66, 110, 145],
+    "roughness": 0.5,
+    "metallic": 0.0,
+    "diffuseMap": "C:\\Textures\\coastal-blue-diffuse.jpg"
+  } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 53,
+  "result": { "material": "Custom-Coastal-Blue" } }
+```
+
+### 22.7 Light handler
+
+**`Light.AddPoint`**
+
+```json
+{ "jsonrpc": "2.0", "id": 60, "method": "Light.AddPoint",
+  "params": {
+    "position": [60, 60, 119.5],
+    "intensity": 800,
+    "color": 2700,
+    "name": "CAN_2_2"
+  } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 60,
+  "result": { "handle": "5A", "name": "CAN_2_2" } }
+```
+
+**`Light.SetSun` (replaces the hung SUNSTATUS sysvar)**
+
+```json
+{ "jsonrpc": "2.0", "id": 61, "method": "Light.SetSun",
+  "params": {
+    "enabled": true,
+    "latitude": 33.6404,
+    "longitude": -117.6031,
+    "date": "2026-04-10T16:30:00",
+    "timezone": -7,
+    "intensity": 1.0
+  } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 61,
+  "result": { "enabled": true, "latitude": 33.6404,
+              "longitude": -117.6031,
+              "date": "2026-04-10T16:30:00", "timezone": -7,
+              "intensity": 1.0 } }
+```
+
+### 22.8 Render handler
+
+**`Render.ListPresets`**
+
+```json
+{ "jsonrpc": "2.0", "id": 70, "method": "Render.ListPresets" }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 70,
+  "result": [
+    { "name": "Draft", "samples": 8, "lighting": "default",
+      "description": "Fast preview" },
+    { "name": "Low", "samples": 16, "lighting": "default",
+      "description": "Quick check" },
+    { "name": "Medium", "samples": 64, "lighting": "photometric",
+      "description": "Standard preview render" },
+    { "name": "High", "samples": 128, "lighting": "photometric",
+      "description": "Client-ready" },
+    { "name": "Presentation", "samples": 256, "lighting": "photometric",
+      "description": "Marketing-quality" }
+  ] }
+```
+
+**`Render.ToFile` — the headless render (no dialog)**
+
+```json
+{ "jsonrpc": "2.0", "id": 71, "method": "Render.ToFile",
+  "params": {
+    "preset": "High",
+    "view": "NEISO",
+    "outputPath": "C:\\VSCode\\callie-job\\-callie-job\\projects\\04-kitchen\\out\\render-final.png",
+    "width": 1920,
+    "height": 1200,
+    "exposure": 0.0
+  } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 71,
+  "result": {
+    "outputPath": "C:\\VSCode\\callie-job\\-callie-job\\projects\\04-kitchen\\out\\render-final.png",
+    "durationMs": 47230
+  } }
+```
+
+### 22.9 Layout & Plot handler
+
+**`Layout.Create`**
+
+```json
+{ "jsonrpc": "2.0", "id": 80, "method": "Layout.Create",
+  "params": {
+    "name": "A-201",
+    "paperSize": "ARCH-D",
+    "plotter": "DWG To PDF.pc3"
+  } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 80, "result": { "name": "A-201" } }
+```
+
+**`Layout.AddViewport`**
+
+```json
+{ "jsonrpc": "2.0", "id": 81, "method": "Layout.AddViewport",
+  "params": {
+    "layout": "A-201",
+    "center": [12, 18],
+    "width": 18,
+    "height": 12,
+    "viewName": "TOP",
+    "scale": 0.0208333
+  } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 81, "result": { "handle": "9F" } }
+```
+
+**`Plot.ToPdf`**
+
+```json
+{ "jsonrpc": "2.0", "id": 82, "method": "Plot.ToPdf",
+  "params": {
+    "layout": "A-201",
+    "outputPath": "C:\\VSCode\\callie-job\\-callie-job\\projects\\04-kitchen\\out\\kitchen-A-201.pdf",
+    "paperSize": "ARCH-D"
+  } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 82,
+  "result": {
+    "outputPath": "C:\\VSCode\\callie-job\\-callie-job\\projects\\04-kitchen\\out\\kitchen-A-201.pdf"
+  } }
+```
+
+### 22.10 Export & Import handler
+
+**`Export.Fbx`**
+
+```json
+{ "jsonrpc": "2.0", "id": 90, "method": "Export.Fbx",
+  "params": {
+    "outputPath": "C:\\VSCode\\callie-job\\-callie-job\\projects\\04-kitchen\\out\\kitchen.fbx",
+    "options": {
+      "exportMaterials": true,
+      "exportLights": true,
+      "exportCameras": true
+    }
+  } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 90,
+  "result": {
+    "outputPath": "C:\\VSCode\\callie-job\\-callie-job\\projects\\04-kitchen\\out\\kitchen.fbx",
+    "sizeBytes": 482733
+  } }
+```
+
+**`Export.LayerStls` (replaces the per-layer hack)**
+
+```json
+{ "jsonrpc": "2.0", "id": 91, "method": "Export.LayerStls",
+  "params": {
+    "outputDir": "C:\\VSCode\\callie-job\\-callie-job\\projects\\04-kitchen\\out\\stl-by-layer",
+    "layers": ["A-FLOR", "A-WALL", "I-CASE", "I-CASE-CTR"]
+  } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 91,
+  "result": {
+    "files": [
+      { "layer": "A-FLOR", "path": "...\\A-FLOR.stl", "sizeBytes": 684 },
+      { "layer": "A-WALL", "path": "...\\A-WALL.stl", "sizeBytes": 3084 },
+      { "layer": "I-CASE", "path": "...\\I-CASE.stl", "sizeBytes": 2084 },
+      { "layer": "I-CASE-CTR", "path": "...\\I-CASE-CTR.stl",
+        "sizeBytes": 2484 }
+    ]
+  } }
+```
+
+**`Import.RasterImage`**
+
+```json
+{ "jsonrpc": "2.0", "id": 92, "method": "Import.RasterImage",
+  "params": {
+    "path": "C:\\VSCode\\callie-job\\-callie-job\\projects\\04-kitchen\\out\\render-photoreal.png",
+    "position": [10, 10, 0],
+    "scale": 1.0,
+    "layer": "0"
+  } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 92, "result": { "handle": "AB" } }
+```
+
+### 22.11 Dimension handler
+
+**`Dimension.AddLinear`**
+
+```json
+{ "jsonrpc": "2.0", "id": 100, "method": "Dimension.AddLinear",
+  "params": {
+    "p1": [0, 0, 0],
+    "p2": [168, 0, 0],
+    "dimLineLocation": [84, -36, 0],
+    "rotationRadians": 0,
+    "layer": "A-ANNO-DIMS"
+  } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 100, "result": { "handle": "C5" } }
+```
+
+**`Dimension.SetStyleVariable`**
+
+```json
+{ "jsonrpc": "2.0", "id": 101, "method": "Dimension.SetStyleVariable",
+  "params": { "name": "DIMSCALE", "value": 24.0 } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 101, "result": { "previous": 1.0 } }
+```
+
+### 22.12 Var handler
+
+**`Var.Set` and `Var.SetMany`**
+
+```json
+{ "jsonrpc": "2.0", "id": 110, "method": "Var.SetMany",
+  "params": {
+    "vars": [
+      { "name": "FILEDIA", "value": 0 },
+      { "name": "CMDDIA", "value": 0 },
+      { "name": "EXPERT", "value": 5 },
+      { "name": "LIGHTINGUNITS", "value": 2 }
+    ]
+  } }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 110, "result": { "set": 4 } }
+```
+
+### 22.13 Server & Cancel handler
+
+**`Server.Health`**
+
+```json
+{ "jsonrpc": "2.0", "id": 120, "method": "Server.Health" }
+```
+
+```json
+{ "jsonrpc": "2.0", "id": 120,
+  "result": {
+    "ok": true,
+    "version": "1.0.0",
+    "schema": "1.0",
+    "uptimeSeconds": 1245,
+    "queueDepth": 0,
+    "queueDepthMax": 12,
+    "rpcsHandled": 8401,
+    "rpcsErrored": 14,
+    "lastIdleAgo": 80,
+    "lastIdleAgoMaxMs": 1820,
+    "autocadVersion": "26.0.0",
+    "activeDocument": "C:\\VSCode\\callie-job\\-callie-job\\projects\\04-kitchen\\out\\kitchen.dwg"
+  } }
+```
+
+**`Cancel.RequestById` (notification — no response)**
+
+```json
+{ "jsonrpc": "2.0", "method": "Cancel.RequestById",
+  "params": { "rpcId": 71 } }
+```
+
+The previously-issued request 71 (e.g. a long render) returns:
+
+```json
+{ "jsonrpc": "2.0", "id": 71,
+  "error": {
+    "code": -32004,
+    "message": "Request cancelled by client",
+    "data": { "symbol": "Cancelled", "rpcId": 71 }
+  } }
+```
+
+### 22.14 Batch request example
+
+JSON-RPC 2.0 batches: send an array, receive an array. Useful for
+"create 4 layers + 16 boxes" in one round trip.
+
+Request:
+
+```json
+[
+  { "jsonrpc": "2.0", "id": 200, "method": "Layer.Create",
+    "params": { "name": "I-CASE", "color": 33 } },
+  { "jsonrpc": "2.0", "id": 201, "method": "Layer.Create",
+    "params": { "name": "I-FURN", "color": 3 } },
+  { "jsonrpc": "2.0", "id": 202, "method": "Geometry.AddBox",
+    "params": { "corner1": [0,0,0], "corner2": [10,5,8], "layer": "I-CASE" } }
+]
+```
+
+Response (order matches request order):
+
+```json
+[
+  { "jsonrpc": "2.0", "id": 200,
+    "result": { "name": "I-CASE", "created": true } },
+  { "jsonrpc": "2.0", "id": 201,
+    "result": { "name": "I-FURN", "created": true } },
+  { "jsonrpc": "2.0", "id": 202,
+    "result": { "handle": "2BC", "objectName": "AcDb3dSolid",
+                "layer": "I-CASE", "boundingBox": {...},
+                "center": [5,2.5,4], "size": [10,5,8] } }
+]
+```
+
+---
+
 ## Appendix A — JSON Schema
 
 All RPC method params and returns have a JSON Schema (Draft 2020-12)
@@ -1658,6 +2585,100 @@ Assemblies referenced: `accoremgd.dll`, `acdbmgd.dll`, `acmgd.dll`,
 
 ---
 
+## Appendix D — Changelog
+
+This is the contents of what would otherwise live in
+`docs/CHANGELOG.md`. Format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning
+per § 10 of this spec.
+
+### [Unreleased]
+
+Phase 1 work goes here. As tickets land on `main`, append entries
+under one of these subsections: `### Added`, `### Changed`,
+`### Deprecated`, `### Removed`, `### Fixed`, `### Security`.
+
+### [1.0.0] — TBD (Phase 4 exit)
+
+First production release. All four phases complete; passes acceptance
+tests § 18.
+
+#### Added
+
+- Plugin loads via `NETLOAD` and exposes JSON-RPC 2.0 over TCP
+  127.0.0.1:7878 (configurable). See § 3.
+- 84 RPC methods across 11 handlers. See § 5 catalog and § 22 examples.
+- `Document.*` — Status, New, Open, Save, SaveAs, Close, Cancel.
+- `Layer.*` — List, Create, SetActive, Freeze, Delete.
+- `Geometry.*` — 18 methods covering primitives, 2D entities, and 3D
+  CSG (Boolean, Loft, Revolve, Sweep, Extrude, Fillet, Chamfer,
+  PressPull). Loft / Revolve / Sweep / Fillet replace the LISP
+  `(handent ...)` fragments from session 04-25.
+- `Entity.*` — Get, List, Delete, SetColor, SetLayer, SetMaterial,
+  GetBoundingBox, Move, Rotate, Scale.
+- `View.*` — SetPreset, SetCustom, SaveCamera, RestoreCamera,
+  ListCameras, DeleteCamera, ZoomExtents, ZoomWindow.
+  `View.RestoreCamera` actually restores camera position (replaces
+  broken `_-VIEW _R` from session 04-27).
+- `VisualStyle.*` — Set, SetVariable, GetVariable.
+- `Material.*` — ListLibrary, ImportFromLibrary, Create,
+  AssignToLayer, AssignToEntity, List, Delete. Library import via
+  managed `Autodesk.AutoCAD.MaterialLibrary` API replaces MATBROWSER
+  drag-drop.
+- `Light.*` — AddPoint, AddSpot, AddDistant, SetSun, List, Delete.
+  `SetSun` replaces hung `SUNSTATUS` SetVariable from session 04-27.
+- `Render.*` — ListPresets, ToFile, SetDefaults. `Render.ToFile`
+  produces PNG without opening any dialog.
+- `Layout.*` + `Plot.*` — programmatic ARCH-D sheets with viewports,
+  per-viewport view + scale + layer freeze, plot to PDF.
+- `Export.*` — Fbx, Gltf, Stl, Dxf, Png, LayerStls. `LayerStls`
+  replaces the per-layer hack in `export_per_layer_stl.py`.
+- `Import.*` — RasterImage (replaces `IMAGEATTACH` dialog), Block,
+  Xref.
+- `Dimension.*` — AddLinear, AddAligned, AddRadius, AddAngular,
+  SetStyleVariable.
+- `Var.*` — Get, Set, SetMany (atomic).
+- `Server.*` — Health, ListMethods.
+- `Cancel.RequestById` — interrupts a long-running RPC.
+- Modal-dialog auto-detection. Plugin returns `-32005
+  ModalDialogActive` within `config.timeouts.modalDetectMs` instead of
+  hanging silently. See § 6.4.
+- 16 custom error codes (`-32000` to `-32015`). See § 6.2.
+- Configuration at `%APPDATA%\TechniCadBridge\config.json` with
+  schema validation and graceful fallback. See § 7.
+- File logging at `%APPDATA%\TechniCadBridge\plugin.log`. See § 8.1.
+- Opt-in telemetry at `%APPDATA%\TechniCadBridge\trace.jsonl`. See
+  § 8.2.
+- `install.ps1` / `uninstall.ps1` scripts. See § 14.
+- Python `plugin_client.py` JSON-RPC client and `acad.py` facade
+  (plugin-first, COM-fallback). See § 13.4–13.5.
+- Auto-generated `docs/PROTOCOL.md` from XML doc comments via
+  `scripts/gen-protocol-md.ps1`.
+
+#### Performance characteristics
+
+- `Geometry.AddBox` p99 latency < 50 ms.
+- `Render.ToFile` Medium @ 1920×1080: 60 s.
+- `Plot.ToPdf` ARCH-D sheet: 30 s.
+- 10000 small ops over 1 hour: zero deadlocks, no queue growth.
+
+#### Compatibility
+
+- Tested on AutoCAD 2026 and 2027.
+- Not supported: AutoCAD LT, Mac AutoCAD.
+
+### [0.1.0] — 2026-04-27
+
+Specification only — no code.
+
+#### Added
+
+- `PLUGIN_SPEC.md` v0.1 — initial draft.
+- `PLUGIN_SYSTEM_SPEC.md` v1.0 — full system specification with all
+  open questions resolved. Supersedes v0.1.
+
+---
+
 *End of v1.0 system specification. Treat this as the contract for
-Phase 1 kickoff. Changes after kickoff require a CHANGELOG entry and
-a re-review.*
+Phase 1 kickoff. Changes after kickoff require a Changelog entry in
+Appendix D and a re-review.*
